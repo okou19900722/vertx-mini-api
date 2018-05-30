@@ -6,4 +6,8 @@ public class Not200Exception extends RuntimeException {
     public Not200Exception(int status) {
         this.status = status;
     }
+
+    public int getStatus() {
+        return status;
+    }
 }
