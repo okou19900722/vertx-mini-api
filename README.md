@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/okou19900722/vertx-wechat-sdk.svg?branch=master)](https://travis-ci.org/okou19900722/vertx-wechat-sdk)
 #vertx-wechat-sdk
 
 基于vertx实现的微信sdk

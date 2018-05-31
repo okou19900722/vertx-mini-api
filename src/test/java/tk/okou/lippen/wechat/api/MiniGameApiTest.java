@@ -2,7 +2,6 @@ package tk.okou.lippen.wechat.api;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -18,9 +17,9 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 
-public class WeChatApiTest {
+public class MiniGameApiTest {
     private Vertx vertx;
-    private WeChatApi wxApi;
+    private MiniGameApi wxApi;
 
     @Before
     public void before() {
@@ -32,7 +31,7 @@ public class WeChatApiTest {
          */
         WeChatOptions weChatOptions = new WeChatOptions();
         weChatOptions.getApiHttpsClientOptions().setDefaultHost(host).setDefaultPort(port);
-        wxApi = WeChatApi.create(vertx, weChatOptions);
+        wxApi = MiniGameApi.create(vertx, weChatOptions);
 
         /*
          * create mock server
