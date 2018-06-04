@@ -72,17 +72,17 @@ public class MockRouter {
                         .put("session_key", "session_key")
                         .put("uinionid", "uinionid")
                         .put("errcode", 0)
-                        .put("errMsg", "success");
+                        .put("errmsg", "success");
                 break;
             case "error":
                 result
                         .put("errcode", 40029)
-                        .put("errMsg", "code 无效");
+                        .put("errmsg", "code 无效");
                 break;
             default:
                 result
                         .put("errcode", -1)
-                        .put("errMsg", "系统繁忙，此时请开发者稍候再试");
+                        .put("errmsg", "系统繁忙，此时请开发者稍候再试");
         }
         context.response().headers().add("Content-Type", "text/plain;charset=UTF-8");
         context.response().end(result.toBuffer());

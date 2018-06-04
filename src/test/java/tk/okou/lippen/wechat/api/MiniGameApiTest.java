@@ -29,9 +29,9 @@ public class MiniGameApiTest {
         /*
          * create a wxapi
          */
-        WeChatOptions weChatOptions = new WeChatOptions();
-        weChatOptions.getApiHttpsClientOptions().setDefaultHost(host).setDefaultPort(port);
-        wxApi = MiniGameApi.create(vertx, weChatOptions);
+        MiniGameOptions miniGameOptions = new MiniGameOptions();
+        miniGameOptions.getApiHttpsClientOptions().setDefaultHost(host).setDefaultPort(port);
+        wxApi = MiniGameApi.create(vertx, miniGameOptions);
 
         /*
          * create mock server
@@ -55,14 +55,18 @@ public class MiniGameApiTest {
     public void testCode2accessTokenOk() throws InterruptedException {
         CountDownLatch c = new CountDownLatch(1);
         code2accessTokenTest(c, "ok", asyncResult -> {
-            assertTrue(asyncResult.succeeded());
-            JsonObject result = asyncResult.result();
-            assertNotNull(result);
-            assertEquals("openid", result.getString("openid"));
-            assertEquals("session_key", result.getString("session_key"));
-            assertEquals("uinionid", result.getString("uinionid"));
-            assertEquals("success", result.getString("errMsg"));
-            assertEquals(0, (int) result.getInteger("errcode"));
+            if (asyncResult.succeeded()) {
+                assertTrue(asyncResult.succeeded());
+                JsonObject result = asyncResult.result();
+                assertNotNull(result);
+                assertEquals("openid", result.getString("openid"));
+                assertEquals("session_key", result.getString("session_key"));
+                assertEquals("uinionid", result.getString("uinionid"));
+                assertEquals("success", result.getString("errmsg"));
+                assertEquals(0, (int) result.getInteger("errcode"));
+            } else {
+                asyncResult.cause().printStackTrace();
+            }
             c.countDown();
         });
     }
@@ -75,7 +79,7 @@ public class MiniGameApiTest {
             JsonObject result = asyncResult.result();
             assertNotNull(result);
             assertEquals(40029, (int) result.getInteger("errcode"));
-            assertEquals("code 无效", result.getString("errMsg"));
+            assertEquals("code 无效", result.getString("errmsg"));
             c.countDown();
         });
     }
@@ -87,7 +91,7 @@ public class MiniGameApiTest {
             JsonObject result = asyncResult.result();
             assertNotNull(result);
             assertEquals(-1, (int) result.getInteger("errcode"));
-            assertEquals("系统繁忙，此时请开发者稍候再试", result.getString("errMsg"));
+            assertEquals("系统繁忙，此时请开发者稍候再试", result.getString("errmsg"));
             c.countDown();
         });
     }
