@@ -10,9 +10,9 @@ import static org.junit.Assert.assertEquals;
 public class DigestUtilTest {
     @Test
     public void testHMacSha256() throws InvalidKeyException, NoSuchAlgorithmException {
-        String sessionKey = "dasdfasdfae";
-        String data = "123456";
+        String sessionKey = "o0q0otL8aEzpcZL/FT9WsQ==";
+        String data = "{\"foo\":\"bar\"}";
         String hash = DigestUtil.hmacSha256(data, sessionKey);
-        assertEquals(hash, "dUrVv5xw576IrvliDy8PzGnPHBIWxjKVXpUxaPeRsP0=");
+        assertEquals(hash, "654571f79995b2ce1e149e53c0a33dc39c0a74090db514261454e8dbe432aa0b");
     }
 }
