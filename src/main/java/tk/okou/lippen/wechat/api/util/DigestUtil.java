@@ -7,12 +7,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class DigestUtil {
-
+    private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
     public static String hmacSha256(String data, String sessionKey) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmacSha256 = Mac.getInstance("HmacSHA256");
         SecretKeySpec secretKey = new SecretKeySpec(sessionKey.getBytes(), "HmacSHA256");
         hmacSha256.init(secretKey);
-        byte[] hash = Base64.getEncoder().encode(hmacSha256.doFinal(data.getBytes()));
-        return new String(hash);
+        return toHex(hmacSha256.doFinal(data.getBytes()));
+    }
+    private static String toHex(byte[] bytes) {
+        StringBuilder ret = new StringBuilder(bytes.length * 2);
+        for (byte b : bytes) {
+            ret.append(HEX_DIGITS[(b >> 4) & 0x0f]);
+            ret.append(HEX_DIGITS[b & 0x0f]);
+        }
+        return ret.toString();
     }
 }
