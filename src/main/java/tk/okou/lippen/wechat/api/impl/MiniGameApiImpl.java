@@ -5,6 +5,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -17,13 +18,14 @@ import tk.okou.lippen.wechat.api.util.SignatureMethod;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.List;
 
 import static tk.okou.lippen.wechat.api.util.MessageFormatUtils.format;
 
 public class MiniGameApiImpl implements MiniGameApi {
     private static final Logger logger = LoggerFactory.getLogger(MiniGameApiImpl.class);
-//    private final Vertx vertx;
+    //    private final Vertx vertx;
 //    private final MiniGameOptions weChatOptions;
     private final HttpClient httpClient;
 //    private final WebClient client;
@@ -63,49 +65,55 @@ public class MiniGameApiImpl implements MiniGameApi {
     public MiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
         return getAccessToken("client_credential", appId, secret, handler);
     }
+
     @Override
     public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
         return setUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
     }
+
     @Override
     public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
         JsonObject data = new JsonObject();
         data.put("kv_list", kvList);
+        doSignature(accessToken, sessionKey, signatureMethod, handler, data, SET_USER_STORAGE, openId);
+        return this;
+    }
+
+    private void doSignature(String accessToken, String sessionKey, SignatureMethod signatureMethod, Handler<AsyncResult<JsonObject>> handler, JsonObject data, MessageFormat setUserStorage, String openId) {
         try {
-            String signature = signatureMethod.signature(data.encode(), sessionKey);
-            get(format(SET_USER_STORAGE, accessToken, signature, signatureMethod.getSignatureMethod()), handler);
+            String postBody = data.encode();
+            String signature = signatureMethod.signature(postBody, sessionKey);
+            post(format(setUserStorage, accessToken, signature, openId, signatureMethod.getSignatureMethod()), postBody, handler);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             fail(handler, e);
         }
-        return this;
     }
+
     @Override
     public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String kvList, Handler<AsyncResult<JsonObject>> handler) {
         return setUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
     }
+
     @Override
     public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String key, Handler<AsyncResult<JsonObject>> handler) {
         return removeUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(key), handler);
     }
+
     @Override
     public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler) {
         JsonObject data = new JsonObject();
         data.put("key", key);
-        try {
-            String signature = signatureMethod.signature(data.encode(), sessionKey);
-            get(format(REMOVE_USER_STORAGE, accessToken, signature, signatureMethod.getSignatureMethod()), handler);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            fail(handler, e);
-        }
+        doSignature(accessToken, sessionKey, signatureMethod, handler, data, REMOVE_USER_STORAGE, openId);
         return this;
     }
+
     @Override
     public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
         return removeUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(key), handler);
     }
 
 
-//    private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
+    //    private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
 //        long start = System.nanoTime();
 //        client.get(uri).send(res->{
 //            long end = System.nanoTime();
@@ -124,20 +132,30 @@ public class MiniGameApiImpl implements MiniGameApi {
 //        });
 //    }
     private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-        httpClient.get(uri, response -> {
+        httpClient.get(uri, responseHandler(handler))
+                /*.setTimeout(1000)*/
+                .exceptionHandler(e -> fail(handler, e))
+                .end();
+    }
+
+    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<JsonObject>> handler) {
+        return response -> {
             int statusCode = response.statusCode();
             if (statusCode == 200) {
-                response.bodyHandler(data -> {
-                    succes(handler, data.toJsonObject());
-                });
-                response.exceptionHandler(e -> {
-                    logger.error("response handler fail", e);
-                });
+                response.bodyHandler(body -> succes(handler, body.toJsonObject()));
+                response.exceptionHandler(e -> logger.error("response handler fail", e));
             } else {
                 fail(handler, new Not200Exception(statusCode));
             }
-        })/*.setTimeout(1000)*/.exceptionHandler(e -> {
-            fail(handler, e);
-        }).end();
+        };
+    }
+
+    private void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
+        System.out.println(uri);
+        System.out.println(data);
+        httpClient.post(uri, responseHandler(handler))
+                /*.setTimeout(1000)*/
+                .exceptionHandler(e -> fail(handler, e))
+                .end(data);
     }
 }
