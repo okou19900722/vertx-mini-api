@@ -6,12 +6,13 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.Objects;
 
-@DataObject
+@DataObject(generateConverter = true, publicConverter = false)
 public class MiniGameOptions {
     private HttpClientOptions apiHttpsClientOptions;
+    private long timeout;
 
     public MiniGameOptions(JsonObject options) {
-
+        MiniGameOptionsConverter.fromJson(options, this);
     }
     public MiniGameOptions() {
         this.apiHttpsClientOptions = new HttpClientOptions().setDefaultHost("api.weixin.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
@@ -30,5 +31,13 @@ public class MiniGameOptions {
     public MiniGameOptions setMaxPoolSize(int maxPoolSize) {
         this.apiHttpsClientOptions.setMaxPoolSize(maxPoolSize);
         return this;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 }

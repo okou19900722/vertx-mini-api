@@ -67,12 +67,16 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     @Override
+    public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
+        return setUserStorage(accessToken, openId, appId, sessionKey, SignatureMethod.HMAC_SHA256, kvList, handler);
+    }
+
+    @Override
     public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
         return setUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
     }
 
-    @Override
-    public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
+    private MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
         JsonObject data = new JsonObject();
         data.put("kv_list", kvList);
         doSignature(accessToken, sessionKey, signatureMethod, handler, data, SET_USER_STORAGE, openId);
@@ -89,18 +93,7 @@ public class MiniGameApiImpl implements MiniGameApi {
         }
     }
 
-    @Override
-    public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String kvList, Handler<AsyncResult<JsonObject>> handler) {
-        return setUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
-    }
-
-    @Override
-    public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String key, Handler<AsyncResult<JsonObject>> handler) {
-        return removeUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(key), handler);
-    }
-
-    @Override
-    public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler) {
+    private MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler) {
         JsonObject data = new JsonObject();
         data.put("key", key);
         doSignature(accessToken, sessionKey, signatureMethod, handler, data, REMOVE_USER_STORAGE, openId);
@@ -108,29 +101,15 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     @Override
-    public MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
-        return removeUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(key), handler);
+    public MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys, Handler<AsyncResult<JsonObject>> handler) {
+        return removeUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, keys, handler);
     }
 
+    @Override
+    public MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
+        return removeUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(key), handler);
+    }
 
-    //    private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-//        long start = System.nanoTime();
-//        client.get(uri).send(res->{
-//            long end = System.nanoTime();
-//            System.out.println("===" + (end - start));
-//            if (res.succeeded()) {
-//                HttpResponse<Buffer> response = res.result();
-//                int statusCode = response.statusCode();
-//                if (statusCode == 200) {
-//                    succes(handler, response.body().toJsonObject());
-//                } else {
-//                    fail(handler, new Not200Exception(statusCode));
-//                }
-//            } else {
-//                res.cause().printStackTrace();
-//            }
-//        });
-//    }
     private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
         httpClient.get(uri, responseHandler(handler))
                 /*.setTimeout(1000)*/

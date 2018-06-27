@@ -6,7 +6,6 @@ import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import tk.okou.lippen.wechat.api.impl.MiniGameApiImpl;
 import tk.okou.lippen.wechat.api.model.KVData;
@@ -72,16 +71,12 @@ public interface MiniGameApi extends BaseApi {
     MiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
 
     /**
-     * @see #setUserStorage(String, String, String, String, SignatureMethod, JsonArray, Handler)
+     * like {@link #setUserStorage(String, String, String, String, SignatureMethod, List, Handler)} 但是使用默认的签名方法{@link SignatureMethod#HMAC_SHA256}
+     *
+     * @see #setUserStorage(String, String, String, String, SignatureMethod, List, Handler)
      */
-    @GenIgnore
-    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String kvList, Handler<AsyncResult<JsonObject>> handler);
-
-    /**
-     * @see #setUserStorage(String, String, String, String, SignatureMethod, JsonArray, Handler)
-     */
-    @GenIgnore
-    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+    @Fluent
+    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
 
     /**
      * @param accessToken     接口调用凭证
@@ -94,30 +89,24 @@ public interface MiniGameApi extends BaseApi {
      * @return 返回自己，方便更fluent的调用
      */
     @GenIgnore
-    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler);
+    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
 
     /**
-     * @see #removeUserStorage(String, String, String, String, SignatureMethod, JsonArray, Handler)
+     * like {@link #removeUserStorage(String, String, String, SignatureMethod, List, Handler)} 但是使用默认的签名方法{@link SignatureMethod#HMAC_SHA256}
+     *
+     * @see #removeUserStorage(String, String, String, SignatureMethod, List, Handler)
      */
-    @GenIgnore
-    MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, String key, Handler<AsyncResult<JsonObject>> handler);
-
-    /**
-     * @see #removeUserStorage(String, String, String, String, SignatureMethod, JsonArray, Handler)
-     */
-    @GenIgnore
-    MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
+    @Fluent
+    MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys, Handler<AsyncResult<JsonObject>> handler);
 
     /**
      * @param accessToken     接口调用凭证
      * @param openId          用户唯一标识符
-     * @param appId           小程序 appId
      * @param sessionKey      会话密钥
      * @param signatureMethod 签名的方法
      * @param key             要删除的key列表
      * @param handler         回调
-     * @return 返回自己，方便更fluent的调用
      */
     @GenIgnore
-    MiniGameApi removeUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler);
+    MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
 }

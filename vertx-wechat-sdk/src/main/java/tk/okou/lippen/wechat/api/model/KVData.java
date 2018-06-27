@@ -1,8 +1,16 @@
 package tk.okou.lippen.wechat.api.model;
 
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.core.json.JsonObject;
+
+@DataObject(generateConverter = true, publicConverter = false)
 public class KVData {
-    private final String key;
-    private final String value;
+    private String key;
+    private String value;
+
+    public KVData(JsonObject data) {
+        KVDataConverter.fromJson(data, this);
+    }
 
     public KVData(String key, String value) {
         this.key = key;
