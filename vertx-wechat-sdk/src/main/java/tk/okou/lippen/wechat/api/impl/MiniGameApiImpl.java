@@ -142,7 +142,14 @@ public class MiniGameApiImpl implements MiniGameApi {
         return response -> {
             int statusCode = response.statusCode();
             if (statusCode == 200) {
-                response.bodyHandler(body -> succes(handler, body.toJsonObject()));
+                response.bodyHandler(body -> {
+                    JsonObject data = body.toJsonObject();
+                    Integer errcode = data.getInteger("errcode");
+                    if (errcode != null) {
+                        logger.error(data);
+                    }
+                    succes(handler, body.toJsonObject());
+                });
                 response.exceptionHandler(e -> logger.error("response handler fail", e));
             } else {
                 fail(handler, new Not200Exception(statusCode));
@@ -151,8 +158,6 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     private void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        System.out.println(uri);
-        System.out.println(data);
         httpClient.post(uri, responseHandler(handler))
                 /*.setTimeout(1000)*/
                 .exceptionHandler(e -> fail(handler, e))

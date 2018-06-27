@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * 小游戏Api，文档:https://developers.weixin.qq.com/minigame/dev/index.html
  */
-@SuppressWarnings("UnusedReturnValue")
 @VertxGen
 public interface MiniGameApi extends BaseApi {
     MessageFormat CODE_2_ACCESS_TOKEN_FORMATTER = new MessageFormat("/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type={3}");
