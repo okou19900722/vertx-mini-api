@@ -3,6 +3,7 @@ package tk.okou.lippen.wechat.kotlin.api
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.lippen.wechat.api.MiniGameApi
+import tk.okou.lippen.wechat.api.model.KVData
 
 /**
  *
@@ -69,6 +70,43 @@ suspend fun MiniGameApi.getAccessTokenAwait(grantType : String, appId : String, 
 suspend fun MiniGameApi.getAccessTokenAwait(appId : String, secret : String) : JsonObject {
     return awaitResult{
         this.getAccessToken(appId, secret, it)
+    }
+}
+
+/**
+ * like [tk.okou.lippen.wechat.api.MiniGameApi] 但是使用默认的签名方法
+ *
+ * @param accessToken 
+ * @param openId 
+ * @param appId 
+ * @param sessionKey 
+ * @param kvList 
+ * @param handler 
+ * @return *
+ * <p/>
+ * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
+ */
+suspend fun MiniGameApi.setUserStorageAwait(accessToken : String, openId : String, appId : String, sessionKey : String, kvList : List<KVData>) : JsonObject {
+    return awaitResult{
+        this.setUserStorage(accessToken, openId, appId, sessionKey, kvList, it)
+    }
+}
+
+/**
+ * like [tk.okou.lippen.wechat.api.MiniGameApi] 但是使用默认的签名方法
+ *
+ * @param accessToken 
+ * @param openId 
+ * @param sessionKey 
+ * @param keys 
+ * @param handler 
+ * @return *
+ * <p/>
+ * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
+ */
+suspend fun MiniGameApi.removeUserStorageAwait(accessToken : String, openId : String, sessionKey : String, keys : List<String>) : JsonObject {
+    return awaitResult{
+        this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
     }
 }
 
