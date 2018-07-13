@@ -16,7 +16,7 @@
 
     <properties>
         <vertx.version>3.6.0-SNAPSHOT</vertx.version>
-        <kotlin.version>1.2.50</kotlin.version>
+        <kotlin.version>1.2.51</kotlin.version>
         <junit.version>4.12</junit.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

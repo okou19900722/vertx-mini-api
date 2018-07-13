@@ -16,9 +16,9 @@ import tk.okou.lippen.wechat.api.model.KVData
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, jsCode : String) : JsonObject {
-    return awaitResult{
-        this.code2accessToken(appId, secret, jsCode, it)
-    }
+  return awaitResult{
+    this.code2accessToken(appId, secret, jsCode, it)
+  }
 }
 
 /**
@@ -35,9 +35,9 @@ suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, j
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, jsCode : String, grantType : String) : JsonObject {
-    return awaitResult{
-        this.code2accessToken(appId, secret, jsCode, grantType, it)
-    }
+  return awaitResult{
+    this.code2accessToken(appId, secret, jsCode, grantType, it)
+  }
 }
 
 /**
@@ -53,9 +53,9 @@ suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, j
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.getAccessTokenAwait(grantType : String, appId : String, secret : String) : JsonObject {
-    return awaitResult{
-        this.getAccessToken(grantType, appId, secret, it)
-    }
+  return awaitResult{
+    this.getAccessToken(grantType, appId, secret, it)
+  }
 }
 
 /**
@@ -68,9 +68,9 @@ suspend fun MiniGameApi.getAccessTokenAwait(grantType : String, appId : String, 
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.getAccessTokenAwait(appId : String, secret : String) : JsonObject {
-    return awaitResult{
-        this.getAccessToken(appId, secret, it)
-    }
+  return awaitResult{
+    this.getAccessToken(appId, secret, it)
+  }
 }
 
 /**
@@ -87,9 +87,9 @@ suspend fun MiniGameApi.getAccessTokenAwait(appId : String, secret : String) : J
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.setUserStorageAwait(accessToken : String, openId : String, appId : String, sessionKey : String, kvList : List<KVData>) : JsonObject {
-    return awaitResult{
-        this.setUserStorage(accessToken, openId, appId, sessionKey, kvList, it)
-    }
+  return awaitResult{
+    this.setUserStorage(accessToken, openId, appId, sessionKey, kvList, it)
+  }
 }
 
 /**
@@ -105,8 +105,8 @@ suspend fun MiniGameApi.setUserStorageAwait(accessToken : String, openId : Strin
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
 suspend fun MiniGameApi.removeUserStorageAwait(accessToken : String, openId : String, sessionKey : String, keys : List<String>) : JsonObject {
-    return awaitResult{
-        this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
-    }
+  return awaitResult{
+    this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
+  }
 }
 
