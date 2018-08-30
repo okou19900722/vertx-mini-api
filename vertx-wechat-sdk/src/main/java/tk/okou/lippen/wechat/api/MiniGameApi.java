@@ -21,12 +21,19 @@ import java.util.List;
  */
 @VertxGen
 public interface MiniGameApi extends BaseApi {
+    @GenIgnore
     MessageFormat CODE_2_ACCESS_TOKEN_FORMATTER = new MessageFormat("/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type={3}");
+    @GenIgnore
     MessageFormat GET_ACCESS_TOKEN = new MessageFormat("/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}");
+    @GenIgnore
     MessageFormat SET_USER_STORAGE = new MessageFormat("/wxa/set_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
+    @GenIgnore
     MessageFormat REMOVE_USER_STORAGE = new MessageFormat("/wxa/remove_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
+    @GenIgnore
     MessageFormat QRCODE_A = new MessageFormat("/wxa/getwxacode?access_token={0}");
+    @GenIgnore
     MessageFormat QRCODE_B = new MessageFormat("/wxa/getwxacodeunlimit?access_token={0}");
+    @GenIgnore
     MessageFormat QRCODE_C = new MessageFormat("/cgi-bin/wxaapp/createwxaqrcode?access_token={0}");
 
     static MiniGameApi create(Vertx vertx) {

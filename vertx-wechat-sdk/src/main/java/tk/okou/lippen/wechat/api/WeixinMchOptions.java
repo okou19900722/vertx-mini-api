@@ -15,7 +15,7 @@ public class WeixinMchOptions {
     private long timeout;
 
     public WeixinMchOptions(JsonObject options) {
-        MiniProgramOptionsConverter.fromJson(options, this);
+        WeixinMchOptionsConverter.fromJson(options, this);
     }
     public WeixinMchOptions() {
         this.apiHttpsClientOptions = new HttpClientOptions().setDefaultHost("api.mch.weixin.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
