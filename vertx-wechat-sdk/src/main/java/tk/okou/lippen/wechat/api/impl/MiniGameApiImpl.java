@@ -130,7 +130,7 @@ public class MiniGameApiImpl implements MiniGameApi {
                 response.bodyHandler(body -> {
                     JsonObject data = body.toJsonObject();
                     Integer errcode = data.getInteger("errcode");
-                    if (errcode != null) {
+                    if (errcode != null && errcode != 0) {
                         logger.error(response.request().uri() + " - " + data);
                     }
                     succes(handler, body.toJsonObject());
