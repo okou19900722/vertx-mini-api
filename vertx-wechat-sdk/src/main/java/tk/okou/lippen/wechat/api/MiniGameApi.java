@@ -6,6 +6,8 @@ import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import tk.okou.lippen.wechat.api.impl.MiniGameApiImpl;
 import tk.okou.lippen.wechat.api.model.KVData;
@@ -23,6 +25,9 @@ public interface MiniGameApi extends BaseApi {
     MessageFormat GET_ACCESS_TOKEN = new MessageFormat("/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}");
     MessageFormat SET_USER_STORAGE = new MessageFormat("/wxa/set_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
     MessageFormat REMOVE_USER_STORAGE = new MessageFormat("/wxa/remove_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
+    MessageFormat QRCODE_A = new MessageFormat("/wxa/getwxacode?access_token={0}");
+    MessageFormat QRCODE_B = new MessageFormat("/wxa/getwxacodeunlimit?access_token={0}");
+    MessageFormat QRCODE_C = new MessageFormat("/cgi-bin/wxaapp/createwxaqrcode?access_token={0}");
 
     static MiniGameApi create(Vertx vertx) {
         return new MiniGameApiImpl(vertx, new MiniGameOptions());
@@ -109,4 +114,46 @@ public interface MiniGameApi extends BaseApi {
      */
     @GenIgnore
     MiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
+
+    /**
+     * @param accessToken       接口调用凭证
+     * @param path              跳转的页面路径
+     * @param width             二维码的宽度
+     * @param auto_color        自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+     * @param line_color_r      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param line_color_g      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param line_color_b      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param is_hyaline        是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
+     * @param successHandler    成功回调(buffer为图片数据)
+     * @param failHandler       失败回调
+     * */
+    @Fluent
+    MiniGameApi getwxacode(String accessToken, String path, Integer width, Boolean auto_color, Integer line_color_r, Integer line_color_g, Integer line_color_b, Boolean is_hyaline, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler);
+
+    /**
+     * @param accessToken       接口调用凭证
+     * @param scene             小程序码入口参数(通过options获取)
+     * @param page              跳转的页面路径(如果不填写这个字段，默认跳主页面)
+     * @param width             二维码的宽度
+     * @param auto_color        自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+     * @param line_color_r      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param line_color_g      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param line_color_b      auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+     * @param is_hyaline        是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
+     * @param successHandler    成功回调(buffer为图片数据)
+     * @param failHandler       失败回调
+     * */
+    @Fluent
+    MiniGameApi getwxacodeunlimit(String accessToken, String scene, String page, Integer width, Boolean auto_color, Integer line_color_r, Integer line_color_g, Integer line_color_b, Boolean is_hyaline, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler);
+
+    /**
+     * @param accessToken       接口调用凭证
+     * @param path              跳转的页面路径
+     * @param width             二维码的宽度
+     * @param successHandler    成功回调(buffer为图片数据)
+     * @param failHandler       失败回调
+     * */
+    @Fluent
+    MiniGameApi createwxaqrcode(String accessToken, String path, String width, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler);
+
 }

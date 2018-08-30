@@ -1,5 +1,8 @@
 package tk.okou.lippen.wechat.kotlin.api
 
+import io.vertx.core.AsyncResult
+import io.vertx.core.Handler
+import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.lippen.wechat.api.MiniGameApi
@@ -107,6 +110,68 @@ suspend fun MiniGameApi.setUserStorageAwait(accessToken : String, openId : Strin
 suspend fun MiniGameApi.removeUserStorageAwait(accessToken : String, openId : String, sessionKey : String, keys : List<String>) : JsonObject {
   return awaitResult{
     this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
+  }
+}
+
+/**
+ *
+ * @param accessToken 接口调用凭证
+ * @param path 跳转的页面路径
+ * @param width 二维码的宽度
+ * @param auto_color 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+ * @param line_color_r auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param line_color_g auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param line_color_b auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param is_hyaline 是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
+ * @param successHandler 成功回调(buffer为图片数据)
+ * @param failHandler 失败回调
+ * @return *
+ * <p/>
+ * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
+ */
+suspend fun MiniGameApi.getwxacodeAwait(accessToken : String, path : String, width : Int, auto_color : Boolean, line_color_r : Int, line_color_g : Int, line_color_b : Int, is_hyaline : Boolean, successHandler : Handler<AsyncResult<Buffer>>) : JsonObject {
+  return awaitResult{
+    this.getwxacode(accessToken, path, width, auto_color, line_color_r, line_color_g, line_color_b, is_hyaline, successHandler, it)
+  }
+}
+
+/**
+ *
+ * @param accessToken 接口调用凭证
+ * @param scene 小程序码入口参数(通过options获取)
+ * @param page 跳转的页面路径(如果不填写这个字段，默认跳主页面)
+ * @param width 二维码的宽度
+ * @param auto_color 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+ * @param line_color_r auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param line_color_g auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param line_color_b auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
+ * @param is_hyaline 是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
+ * @param successHandler 成功回调(buffer为图片数据)
+ * @param failHandler 失败回调
+ * @return *
+ * <p/>
+ * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
+ */
+suspend fun MiniGameApi.getwxacodeunlimitAwait(accessToken : String, scene : String, page : String, width : Int, auto_color : Boolean, line_color_r : Int, line_color_g : Int, line_color_b : Int, is_hyaline : Boolean, successHandler : Handler<AsyncResult<Buffer>>) : JsonObject {
+  return awaitResult{
+    this.getwxacodeunlimit(accessToken, scene, page, width, auto_color, line_color_r, line_color_g, line_color_b, is_hyaline, successHandler, it)
+  }
+}
+
+/**
+ *
+ * @param accessToken 接口调用凭证
+ * @param path 跳转的页面路径
+ * @param width 二维码的宽度
+ * @param successHandler 成功回调(buffer为图片数据)
+ * @param failHandler 失败回调
+ * @return *
+ * <p/>
+ * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
+ */
+suspend fun MiniGameApi.createwxaqrcodeAwait(accessToken : String, path : String, width : String, successHandler : Handler<AsyncResult<Buffer>>) : JsonObject {
+  return awaitResult{
+    this.createwxaqrcode(accessToken, path, width, successHandler, it)
   }
 }
 

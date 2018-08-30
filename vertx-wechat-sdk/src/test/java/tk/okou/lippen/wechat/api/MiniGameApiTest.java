@@ -104,6 +104,9 @@ public class MiniGameApiTest {
         c.await();
     }
 
+
+
+
     @After
     public void after() {
         vertx.close();
