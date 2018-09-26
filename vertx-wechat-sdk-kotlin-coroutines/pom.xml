@@ -27,6 +27,7 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-codegen</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

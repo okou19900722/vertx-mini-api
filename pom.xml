@@ -89,39 +89,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <profiles>
-        <profile>
-            <!--<id>release</id>-->
-            <id>nexus</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>nexus</id>
-                    <url>http://192.168.0.111:9091/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>nexus</id>
-                    <url>http://192.168.0.111:9091/repository/maven-releases/</url>
-                </repository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
