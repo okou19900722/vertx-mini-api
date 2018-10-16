@@ -44,7 +44,7 @@ public class WeixinMchApiTest {
                 System.out.println("async.succeeded");
                 System.out.println(async.result());
             }else {
-                System.out.println(async.cause());
+                async.cause().printStackTrace();
             }
             c.countDown();
         });
