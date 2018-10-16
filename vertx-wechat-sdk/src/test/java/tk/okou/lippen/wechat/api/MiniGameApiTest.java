@@ -1,6 +1,7 @@
 package tk.okou.lippen.wechat.api;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -22,7 +23,7 @@ public class MiniGameApiTest {
     private MiniGameApi wxApi;
 
     @Before
-    public void before() {
+    public void before() throws InterruptedException {
         int port = 9099;
         String host = "localhost";
         vertx = Vertx.vertx();
@@ -48,7 +49,16 @@ public class MiniGameApiTest {
         MockRouter.route(router);
 
         server.requestHandler(router);
-        server.listen();
+        CountDownLatch c = new CountDownLatch(1);
+        server.listen(r -> {
+            if (r.succeeded()) {
+                System.out.println("[http server listen success]");
+            } else {
+                r.cause().printStackTrace();
+            }
+            c.countDown();
+        });
+        c.await();
     }
 
     @Test
@@ -100,7 +110,13 @@ public class MiniGameApiTest {
         String appId = "wx1d138f3b46298880";
         String secret = "449667fafccc0e59bd9f0475a7b46388";
         String accessToken = "10_7HdWQJMyJvrCF4F_18TOGg1VWrrYfl5RxbPilavE78VJCqP1QSBmNVLO6usdNsGH7B6nugGUP1FdJVpbz_pBbkcsa4Qhx59cxqNxDBZ-SzYPjr7VIemiim6UAC74GE1lN4T_xwSaYH0kCpoOMZBgABAZMO";
-        wxApi.code2accessToken(appId, secret, jsCode, handler);
+        wxApi.code2accessToken(appId, secret, jsCode, r -> {
+            try {
+                handler.handle(r);
+            } finally {
+                c.countDown();
+            }
+        });
         c.await();
     }
 
