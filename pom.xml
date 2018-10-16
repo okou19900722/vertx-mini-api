@@ -29,19 +29,6 @@
         <maven.compiler.compilerVersion>8</maven.compiler.compilerVersion>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <name>Aliyun Maven Releases</name>
-            <url>https://repo.rdc.aliyun.com/repository/33277-release-kR75PE/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <name>Aliyun Maven Snapshots</name>
-            <url>https://repo.rdc.aliyun.com/repository/33277-snapshot-C6mRzd/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
