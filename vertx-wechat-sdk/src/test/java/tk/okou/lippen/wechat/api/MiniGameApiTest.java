@@ -64,7 +64,9 @@ public class MiniGameApiTest {
     @Test
     public void testCode2accessTokenOk() throws InterruptedException {
         CountDownLatch c = new CountDownLatch(1);
-        code2accessTokenTest(c, "ok", asyncResult -> {
+        Future<JsonObject> f = Future.future();
+        code2accessTokenTest(c, "ok", f);
+        f.setHandler(asyncResult -> {
             if (asyncResult.succeeded()) {
                 assertTrue(asyncResult.succeeded());
                 JsonObject result = asyncResult.result();
@@ -84,7 +86,9 @@ public class MiniGameApiTest {
     @Test
     public void testCode2accessTokenError() throws InterruptedException {
         CountDownLatch c = new CountDownLatch(1);
-        code2accessTokenTest(c, "error", asyncResult -> {
+        Future<JsonObject> f = Future.future();
+        code2accessTokenTest(c, "error", f);
+        f.setHandler(asyncResult -> {
             assertTrue(asyncResult.succeeded());
             JsonObject result = asyncResult.result();
             assertNotNull(result);
@@ -96,7 +100,12 @@ public class MiniGameApiTest {
     @Test
     public void testCode2accessTokenFail() throws InterruptedException {
         CountDownLatch c = new CountDownLatch(1);
-        code2accessTokenTest(c, "fail", asyncResult -> {
+        Future<JsonObject> f = Future.future();
+        code2accessTokenTest(c, "fail", f);
+        f.setHandler(asyncResult -> {
+            if (asyncResult.failed()) {
+                asyncResult.cause().printStackTrace();
+            }
             assertTrue(asyncResult.succeeded());
             JsonObject result = asyncResult.result();
             assertNotNull(result);
