@@ -13,8 +13,7 @@ import tk.okou.lippen.wechat.api.model.KVData
  * @param appId 
  * @param secret 
  * @param jsCode 
- * @param handler 
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -32,8 +31,7 @@ suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, j
  * @param secret 小程序 appSecret
  * @param jsCode 登录时获取的 cod
  * @param grantType 
- * @param handler 登录凭证校验成功之后的回调
- * @return返回自己，方便更fluent的调用 *
+ * @return 返回自己，方便更fluent的调用 *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -50,8 +48,7 @@ suspend fun MiniGameApi.code2accessTokenAwait(appId : String, secret : String, j
  * @param grantType 填写 client_credential
  * @param appId 小程序 appId
  * @param secret 小程序 appSecret
- * @param handler 回调
- * @return返回自己，方便更fluent的调用 *
+ * @return 返回自己，方便更fluent的调用 *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -65,8 +62,7 @@ suspend fun MiniGameApi.getAccessTokenAwait(grantType : String, appId : String, 
  *
  * @param appId 
  * @param secret 
- * @param handler 
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -84,8 +80,7 @@ suspend fun MiniGameApi.getAccessTokenAwait(appId : String, secret : String) : J
  * @param appId 
  * @param sessionKey 
  * @param kvList 
- * @param handler 
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -102,8 +97,7 @@ suspend fun MiniGameApi.setUserStorageAwait(accessToken : String, openId : Strin
  * @param openId 
  * @param sessionKey 
  * @param keys 
- * @param handler 
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -124,8 +118,7 @@ suspend fun MiniGameApi.removeUserStorageAwait(accessToken : String, openId : St
  * @param line_color_b auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
  * @param is_hyaline 是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
  * @param successHandler 成功回调(buffer为图片数据)
- * @param failHandler 失败回调
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -147,8 +140,7 @@ suspend fun MiniGameApi.getwxacodeAwait(accessToken : String, path : String, wid
  * @param line_color_b auth_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"},十进制表示
  * @param is_hyaline 是否需要透明底色， is_hyaline 为true时，生成透明底色的小程序码
  * @param successHandler 成功回调(buffer为图片数据)
- * @param failHandler 失败回调
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */
@@ -164,8 +156,7 @@ suspend fun MiniGameApi.getwxacodeunlimitAwait(accessToken : String, scene : Str
  * @param path 跳转的页面路径
  * @param width 二维码的宽度
  * @param successHandler 成功回调(buffer为图片数据)
- * @param failHandler 失败回调
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.MiniGameApi original] using Vert.x codegen.
  */

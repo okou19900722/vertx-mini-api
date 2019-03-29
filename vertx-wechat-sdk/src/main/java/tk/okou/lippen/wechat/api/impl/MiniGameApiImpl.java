@@ -4,24 +4,19 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import tk.okou.lippen.wechat.api.AbstractMiniApi;
 import tk.okou.lippen.wechat.api.MiniGameOptions;
 import tk.okou.lippen.wechat.api.Not200Exception;
 import tk.okou.lippen.wechat.api.MiniGameApi;
 import tk.okou.lippen.wechat.api.model.KVData;
 import tk.okou.lippen.wechat.api.util.SignatureMethod;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
@@ -29,47 +24,11 @@ import java.util.List;
 
 import static tk.okou.lippen.wechat.api.util.MessageFormatUtils.format;
 
-public class MiniGameApiImpl implements MiniGameApi {
+public class MiniGameApiImpl extends AbstractMiniApi<MiniGameApi> implements MiniGameApi {
     private static final Logger logger = LoggerFactory.getLogger(MiniGameApiImpl.class);
-    //    private final Vertx vertx;
-//    private final MiniGameOptions weChatOptions;
-    private final HttpClient httpClient;
-//    private final WebClient client;
 
     public MiniGameApiImpl(Vertx vertx, MiniGameOptions miniGameOptions) {
-//        this.vertx = vertx;
-//        this.miniGameOptions = miniGameOptions;
-        HttpClientOptions httpClientOptions = miniGameOptions.getApiHttpsClientOptions();
-        this.httpClient = vertx.createHttpClient(httpClientOptions);
-//        WebClientOptions options = new WebClientOptions();
-//        options.setDefaultHost(httpClientOptions.getDefaultHost());
-//        options.setDefaultPort(httpClientOptions.getDefaultPort());
-//        options.setSsl(httpClientOptions.isSsl());
-//        options.setVerifyHost(false);
-//        options.setTrustAll(httpClientOptions.isTrustAll());
-//        this.client = WebClient.create(vertx, options);
-    }
-
-    @Override
-    public MiniGameApi code2accessToken(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler) {
-        return code2accessToken(appId, secret, jsCode, "authorization_code", handler);
-    }
-
-    @Override
-    public MiniGameApi code2accessToken(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
-        get(format(CODE_2_ACCESS_TOKEN_FORMATTER, appId, secret, jsCode, grantType), handler);
-        return this;
-    }
-
-    @Override
-    public MiniGameApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
-        get(format(GET_ACCESS_TOKEN, appId, secret), handler);
-        return this;
-    }
-
-    @Override
-    public MiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
-        return getAccessToken("client_credential", appId, secret, handler);
+        super(vertx, miniGameOptions);
     }
 
     @Override
@@ -116,39 +75,6 @@ public class MiniGameApiImpl implements MiniGameApi {
         return removeUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(key), handler);
     }
 
-    private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-        httpClient.get(uri, responseHandler(handler))
-                /*.setTimeout(1000)*/
-                .exceptionHandler(e -> fail(handler, e))
-                .end();
-    }
-
-    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<JsonObject>> handler) {
-        return response -> {
-            int statusCode = response.statusCode();
-            if (statusCode == 200) {
-                response.bodyHandler(body -> {
-                    JsonObject data = body.toJsonObject();
-                    Integer errcode = data.getInteger("errcode");
-                    if (errcode != null && errcode != 0) {
-                        logger.error(response.request().uri() + " - " + data);
-                    }
-                    succes(handler, body.toJsonObject());
-                });
-                response.exceptionHandler(e -> logger.error("response handler fail", e));
-            } else {
-                fail(handler, new Not200Exception(statusCode));
-            }
-        };
-    }
-
-    private void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        httpClient.post(uri, responseHandler(handler))
-                /*.setTimeout(1000)*/
-                .exceptionHandler(e -> fail(handler, e))
-                .end(data);
-    }
-
     private MiniGameApi getQrcode(MessageFormat uriMF, String accessToken, JsonObject postParam, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler){
         Handler<HttpClientResponse> responseHandler = response->{
             int statusCode = response.statusCode();
@@ -156,11 +82,11 @@ public class MiniGameApiImpl implements MiniGameApi {
                 String contentType = response.headers().get(HttpHeaders.CONTENT_TYPE);
                 if (contentType.contains("application/json")){
                     response.bodyHandler(body->{
-                        succes(failHandler, body.toJsonObject());
+                        success(failHandler, body.toJsonObject());
                     });
                 }else {
                     response.bodyHandler(body->{
-                        succes(successHandler, body);
+                        success(successHandler, body);
                     });
                 }
             }else {

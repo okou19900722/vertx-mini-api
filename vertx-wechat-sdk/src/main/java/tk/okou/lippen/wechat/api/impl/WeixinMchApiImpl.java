@@ -45,7 +45,7 @@ public class WeixinMchApiImpl implements WeixinMchApi {
                         logger.info("xml解析出错===>");
                         fail(handler, "xml解析出错");
                     }else {
-                        succes(handler, json);
+                        success(handler, json);
                     }
                 });
 

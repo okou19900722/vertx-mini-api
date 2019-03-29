@@ -13,7 +13,7 @@ import tk.okou.lippen.wechat.api.impl.WeixinMchApiImpl;
  * 微信支付Api，文档:https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1
  */
 @VertxGen
-public interface WeixinMchApi extends BaseApi {
+public interface WeixinMchApi extends BaseMiniApi {
     String UNIFIED_ORDER_URI = "/pay/unifiedorder";
 
     static WeixinMchApi create(Vertx vertx) {
