@@ -4,10 +4,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpClientResponse;
-import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.*;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -18,10 +15,6 @@ import tk.okou.lippen.wechat.api.MiniGameApi;
 import tk.okou.lippen.wechat.api.model.KVData;
 import tk.okou.lippen.wechat.api.util.SignatureMethod;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
@@ -32,15 +25,14 @@ import static tk.okou.lippen.wechat.api.util.MessageFormatUtils.format;
 public class MiniGameApiImpl implements MiniGameApi {
     private static final Logger logger = LoggerFactory.getLogger(MiniGameApiImpl.class);
     //    private final Vertx vertx;
-//    private final MiniGameOptions weChatOptions;
+    private final MiniGameOptions weChatOptions;
     private final HttpClient httpClient;
 //    private final WebClient client;
 
     public MiniGameApiImpl(Vertx vertx, MiniGameOptions miniGameOptions) {
 //        this.vertx = vertx;
-//        this.miniGameOptions = miniGameOptions;
-        HttpClientOptions httpClientOptions = miniGameOptions.getApiHttpsClientOptions();
-        this.httpClient = vertx.createHttpClient(httpClientOptions);
+        this.weChatOptions = miniGameOptions;
+        this.httpClient = vertx.createHttpClient(miniGameOptions);
 //        WebClientOptions options = new WebClientOptions();
 //        options.setDefaultHost(httpClientOptions.getDefaultHost());
 //        options.setDefaultPort(httpClientOptions.getDefaultPort());
@@ -117,9 +109,12 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-        httpClient.get(uri, responseHandler(handler))
-                /*.setTimeout(1000)*/
-                .exceptionHandler(e -> fail(handler, e))
+        //noinspection deprecation
+        HttpClientRequest request = httpClient.get(uri, responseHandler(handler));
+        if (weChatOptions.getTimeout() != null) {
+            request.setTimeout(weChatOptions.getTimeout());
+        }
+        request.exceptionHandler(e -> fail(handler, e))
                 .end();
     }
 
@@ -143,33 +138,35 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     private void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        httpClient.post(uri, responseHandler(handler))
-                /*.setTimeout(1000)*/
-                .exceptionHandler(e -> fail(handler, e))
+        //noinspection deprecation
+        HttpClientRequest request = httpClient.post(uri, responseHandler(handler));
+        if (weChatOptions.getTimeout() != null) {
+            request.setTimeout(weChatOptions.getTimeout());
+        }
+        request.exceptionHandler(e -> fail(handler, e))
                 .end(data);
     }
 
-    private MiniGameApi getQrcode(MessageFormat uriMF, String accessToken, JsonObject postParam, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler){
-        Handler<HttpClientResponse> responseHandler = response->{
+    private MiniGameApi getQrcode(MessageFormat uriMF, String accessToken, JsonObject postParam, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler) {
+        Handler<HttpClientResponse> responseHandler = response -> {
             int statusCode = response.statusCode();
-            if (statusCode == 200){
+            if (statusCode == 200) {
                 String contentType = response.headers().get(HttpHeaders.CONTENT_TYPE);
-                if (contentType.contains("application/json")){
-                    response.bodyHandler(body->{
-                        succes(failHandler, body.toJsonObject());
-                    });
-                }else {
-                    response.bodyHandler(body->{
-                        succes(successHandler, body);
-                    });
+                if (contentType.contains("application/json")) {
+                    response.bodyHandler(body -> succes(failHandler, body.toJsonObject()));
+                } else {
+                    response.bodyHandler(body -> succes(successHandler, body));
                 }
-            }else {
+            } else {
                 fail(failHandler, new Not200Exception(statusCode));
             }
         };
-        httpClient.post(format(uriMF, accessToken), responseHandler)
-                /*.setTimeout(1000)*/
-                .exceptionHandler(e -> fail(failHandler, e))
+        //noinspection deprecation
+        HttpClientRequest request = httpClient.post(format(uriMF, accessToken), responseHandler);
+        if (weChatOptions.getTimeout() != null) {
+            request.setTimeout(weChatOptions.getTimeout());
+        }
+        request.exceptionHandler(e -> fail(failHandler, e))
                 .end(postParam.toString());
         return this;
     }
@@ -178,13 +175,7 @@ public class MiniGameApiImpl implements MiniGameApi {
     public MiniGameApi getwxacode(String accessToken, String path, Integer width, Boolean auto_color, Integer line_color_r, Integer line_color_g, Integer line_color_b, Boolean is_hyaline, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler) {
         JsonObject postParam = new JsonObject();
         postParam.put("path", path);
-        postParam.put("width", width);
-        postParam.put("auto_color", auto_color);
-        if (line_color_r != null && line_color_g != null && line_color_b != null){
-            postParam.put("line_color", new JsonObject().put("r", line_color_r.toString()).put("g", line_color_g.toString()).put("b", line_color_b.toString()).toString());
-        }
-        postParam.put("is_hyaline", is_hyaline);
-        return getQrcode(QRCODE_A, accessToken, postParam, successHandler, failHandler);
+        return getQrCode(accessToken, width, auto_color, line_color_r, line_color_g, line_color_b, is_hyaline, successHandler, failHandler, postParam, QRCODE_A);
     }
 
     @Override
@@ -192,13 +183,17 @@ public class MiniGameApiImpl implements MiniGameApi {
         JsonObject postParam = new JsonObject();
         postParam.put("scene", scene);
         postParam.put("page", page);
+        return getQrCode(accessToken, width, auto_color, line_color_r, line_color_g, line_color_b, is_hyaline, successHandler, failHandler, postParam, QRCODE_B);
+    }
+
+    private MiniGameApi getQrCode(String accessToken, Integer width, Boolean auto_color, Integer line_color_r, Integer line_color_g, Integer line_color_b, Boolean is_hyaline, Handler<AsyncResult<Buffer>> successHandler, Handler<AsyncResult<JsonObject>> failHandler, JsonObject postParam, MessageFormat qrcodeB) {
         postParam.put("width", width);
         postParam.put("auto_color", auto_color);
-        if (line_color_r != null && line_color_g != null && line_color_b != null){
+        if (line_color_r != null && line_color_g != null && line_color_b != null) {
             postParam.put("line_color", new JsonObject().put("r", line_color_r.toString()).put("g", line_color_g.toString()).put("b", line_color_b.toString()).toString());
         }
         postParam.put("is_hyaline", is_hyaline);
-        return getQrcode(QRCODE_B, accessToken, postParam, successHandler, failHandler);
+        return getQrcode(qrcodeB, accessToken, postParam, successHandler, failHandler);
     }
 
     @Override

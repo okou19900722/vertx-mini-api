@@ -29,7 +29,7 @@ public class MiniGameApiTest {
          * create a wxapi
          */
         MiniGameOptions miniGameOptions = new MiniGameOptions();
-        miniGameOptions.getApiHttpsClientOptions().setDefaultHost(host).setDefaultPort(port);
+        miniGameOptions.setDefaultHost(host).setDefaultPort(port);
         wxApi = MiniGameApi.create(vertx, miniGameOptions);
 
         /*
