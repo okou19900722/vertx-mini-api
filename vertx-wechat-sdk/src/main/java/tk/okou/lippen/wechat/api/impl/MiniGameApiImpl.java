@@ -126,7 +126,11 @@ public class MiniGameApiImpl implements MiniGameApi {
                     JsonObject data = body.toJsonObject();
                     Integer errcode = data.getInteger("errcode");
                     if (errcode != null && errcode != 0) {
-                        logger.error(response.request().uri() + " - " + data);
+                        if (errcode == 40163) {
+                            logger.warn("code been used");
+                        } else {
+                            logger.error(response.request().uri() + " - " + data);
+                        }
                     }
                     succes(handler, body.toJsonObject());
                 });
