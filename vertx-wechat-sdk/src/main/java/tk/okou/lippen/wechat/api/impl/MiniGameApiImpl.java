@@ -73,16 +73,16 @@ public class MiniGameApiImpl implements MiniGameApi {
     }
 
     @Override
-    public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
-        return setUserStorage(accessToken, openId, appId, sessionKey, SignatureMethod.HMAC_SHA256, kvList, handler);
+    public MiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
+        return setUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, kvList, handler);
     }
 
     @Override
-    public MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
-        return setUserStorage(accessToken, openId, appId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
+    public MiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
+        return setUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
     }
 
-    private MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
+    private MiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
         JsonObject data = new JsonObject();
         data.put("kv_list", kvList);
         doSignature(accessToken, sessionKey, signatureMethod, handler, data, SET_USER_STORAGE, openId);

@@ -11,8 +11,7 @@ import tk.okou.lippen.wechat.api.WeixinMchApi
  *
  *
  * @param parameter 
- * @param handler 
- * @return *
+ * @return  *
  * <p/>
  * NOTE: This function has been automatically generated from the [tk.okou.lippen.wechat.api.WeixinMchApi original] using Vert.x codegen.
  */

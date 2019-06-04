@@ -83,17 +83,16 @@ public interface MiniGameApi extends BaseApi {
     MiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
 
     /**
-     * like {@link #setUserStorage(String, String, String, String, SignatureMethod, List, Handler)} 但是使用默认的签名方法{@link SignatureMethod#HMAC_SHA256}
+     * like {@link #setUserStorage(String, String, String, SignatureMethod, List, Handler)} 但是使用默认的签名方法{@link SignatureMethod#HMAC_SHA256}
      *
-     * @see #setUserStorage(String, String, String, String, SignatureMethod, List, Handler)
+     * @see #setUserStorage(String, String, String, SignatureMethod, List, Handler)
      */
     @Fluent
-    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+    MiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
 
     /**
      * @param accessToken     接口调用凭证
      * @param openId          用户唯一标识符
-     * @param appId           小程序 appId
      * @param sessionKey      会话密钥
      * @param signatureMethod 签名的方法
      * @param kvList          数据
@@ -101,7 +100,7 @@ public interface MiniGameApi extends BaseApi {
      * @return 返回自己，方便更fluent的调用
      */
     @GenIgnore
-    MiniGameApi setUserStorage(String accessToken, String openId, String appId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+    MiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
 
     /**
      * like {@link #removeUserStorage(String, String, String, SignatureMethod, List, Handler)} 但是使用默认的签名方法{@link SignatureMethod#HMAC_SHA256}
