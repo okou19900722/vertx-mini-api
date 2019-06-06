@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 /**
- * 小游戏Api，文档:https://developers.weixin.qq.com/minigame/dev/index.html
+ * 小游戏Api，文档:https://developers.weixin.qq.com/minigame/dev/api-backend/
  */
 @VertxGen
 public interface MiniGameApi extends BaseApi {
@@ -52,7 +52,7 @@ public interface MiniGameApi extends BaseApi {
 
     /**
      * 登录凭证校验，开发者服务器使用 临时登录凭证code 获取 session_key 和 openid 等。
-     * 文档:https://developers.weixin.qq.com/minigame/dev/document/open-api/login/code2accessToken.html
+     * 文档:https://developers.weixin.qq.com/minigame/dev/api-backend/open-api/login/auth.code2Session.html
      *
      * @param appId   小程序 appId
      * @param secret  小程序 appSecret
@@ -65,7 +65,7 @@ public interface MiniGameApi extends BaseApi {
 
     /**
      * 获取小程序 access_token. access_token 介绍详见 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140183
-     * 文档https://developers.weixin.qq.com/minigame/dev/document/open-api/access-token/getAccessToken.html
+     * 文档 https://developers.weixin.qq.com/minigame/dev/api-backend/open-api/access-token/auth.getAccessToken.html
      *
      * @param grantType 填写 client_credential
      * @param appId     小程序 appId
