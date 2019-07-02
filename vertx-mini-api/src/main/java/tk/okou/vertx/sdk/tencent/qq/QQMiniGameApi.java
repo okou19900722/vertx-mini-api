@@ -23,10 +23,10 @@ public interface QQMiniGameApi {
         return new QQMiniGameApiImpl(vertx, new QQMiniApiOptions());
     }
     @Fluent
-    QQMiniGameApi code2accessToken(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
+    QQMiniGameApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
-    QQMiniGameApi code2accessToken(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler);
+    QQMiniGameApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
     QQMiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);

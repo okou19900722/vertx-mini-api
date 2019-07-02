@@ -10,7 +10,7 @@ public interface WechatMiniApiUrlSupplier extends BaseMiniApiUrlSupplier {
     MessageFormat GET_ACCESS_TOKEN = new MessageFormat("/cgi-bin/token?grant_type={0}&appid={1}&secret={2}");
 
 
-    default String getUrlOfCode2accessToken(String appId, String secret, String jsCode, String grantType) {
+    default String getUrlOfCode2session(String appId, String secret, String jsCode, String grantType) {
         return MessageFormatUtils.format(CODE_2_ACCESS_TOKEN_FORMATTER, appId, secret, jsCode, grantType);
     }
 

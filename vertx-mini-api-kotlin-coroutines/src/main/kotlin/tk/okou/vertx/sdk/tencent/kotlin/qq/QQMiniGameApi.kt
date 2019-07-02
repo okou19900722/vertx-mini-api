@@ -19,15 +19,15 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.vertx.sdk.tencent.qq.QQMiniGameApi
 
-suspend fun QQMiniGameApi.code2accessTokenAwait(appId: String, secret: String, jsCode: String): JsonObject {
+suspend fun QQMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
   return awaitResult {
-    this.code2accessToken(appId, secret, jsCode, it)
+    this.code2session(appId, secret, jsCode, it)
   }
 }
 
-suspend fun QQMiniGameApi.code2accessTokenAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
+suspend fun QQMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
   return awaitResult {
-    this.code2accessToken(appId, secret, jsCode, grantType, it)
+    this.code2session(appId, secret, jsCode, grantType, it)
   }
 }
 

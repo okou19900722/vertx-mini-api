@@ -29,7 +29,7 @@ public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupp
 
     @Fluent
     public AbstractMiniApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
-        String url = getUrlOfCode2accessToken(appId, secret, jsCode, grantType);
+        String url = getUrlOfCode2session(appId, secret, jsCode, grantType);
         get(url, handler);
         return this;
     }

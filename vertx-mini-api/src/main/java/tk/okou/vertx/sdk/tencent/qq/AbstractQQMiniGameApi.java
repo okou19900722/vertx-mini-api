@@ -11,7 +11,7 @@ import tk.okou.sdk.util.SignatureMethod;
 
 import java.util.List;
 
-public class AbstractQQMiniGameApi extends AbstractMiniGameApi implements QQMiniGameApi, QQMiniGameApiUrlSupplier {
+public abstract class AbstractQQMiniGameApi extends AbstractMiniGameApi implements QQMiniGameApi, QQMiniGameApiUrlSupplier {
     public AbstractQQMiniGameApi(Vertx vertx, BaseMiniApiOptions options) {
         super(vertx, options);
     }
