@@ -132,7 +132,7 @@ public class MiniGameApiImpl implements MiniGameApi {
                             logger.error(response.request().uri() + " - " + data);
                         }
                     }
-                    succes(handler, body.toJsonObject());
+                    success(handler, body.toJsonObject());
                 });
                 response.exceptionHandler(e -> logger.error("response handler fail", e));
             } else {
@@ -157,9 +157,9 @@ public class MiniGameApiImpl implements MiniGameApi {
             if (statusCode == 200) {
                 String contentType = response.headers().get(HttpHeaders.CONTENT_TYPE);
                 if (contentType.contains("application/json")) {
-                    response.bodyHandler(body -> succes(failHandler, body.toJsonObject()));
+                    response.bodyHandler(body -> success(failHandler, body.toJsonObject()));
                 } else {
-                    response.bodyHandler(body -> succes(successHandler, body));
+                    response.bodyHandler(body -> success(successHandler, body));
                 }
             } else {
                 fail(failHandler, new Not200Exception(statusCode));

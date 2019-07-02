@@ -1,6 +1,5 @@
 package tk.okou.lippen.wechat.api;
 
-import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -15,7 +14,7 @@ public interface BaseApi {
         handler.handle(Future.failedFuture(message));
     }
 
-    default <T> void succes(Handler<AsyncResult<T>> handler, T result) {
+    default <T> void success(Handler<AsyncResult<T>> handler, T result) {
         handler.handle(Future.succeededFuture(result));
     }
 }
