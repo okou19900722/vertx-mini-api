@@ -3,18 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>vertx-wechat-sdk-parent</artifactId>
+        <artifactId>vertx-mini-api-parent</artifactId>
         <groupId>tk.okou</groupId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>vertx-wechat-sdk-kotlin-coroutines</artifactId>
+    <artifactId>vertx-mini-api-kotlin-coroutines</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>tk.okou</groupId>
-            <artifactId>vertx-wechat-sdk</artifactId>
+            <artifactId>vertx-mini-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -114,10 +114,10 @@
                                 <processor>io.vertx.codegen.CodeGenProcessor</processor>
                             </processors>
                             <optionMap>
-                                <codegen.output>${project.basedir}/../vertx-wechat-sdk-kotlin-coroutines/src/main/</codegen.output>
+                                <codegen.output>${project.basedir}/../vertx-mini-api-kotlin-coroutines/src/main/</codegen.output>
                                 <codegen.generators>KotlinCoroutines</codegen.generators>
                             </optionMap>
-                            <sourceDirectory>${project.basedir}/../vertx-wechat-sdk/src/main/java</sourceDirectory>
+                            <sourceDirectory>${project.basedir}/../vertx-mini-api/src/main/java</sourceDirectory>
                             <!--<additionalSourceDirectories>-->
                             <!--<additionalSourceDirectory>${project.basedir}/src/test/java</additionalSourceDirectory>-->
                             <!--</additionalSourceDirectories>-->

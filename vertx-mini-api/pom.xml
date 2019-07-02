@@ -6,11 +6,11 @@
 
     <parent>
         <groupId>tk.okou</groupId>
-        <artifactId>vertx-wechat-sdk-parent</artifactId>
+        <artifactId>vertx-mini-api-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>vertx-wechat-sdk</artifactId>
+    <artifactId>vertx-mini-api</artifactId>
     <version>0.0.2-SNAPSHOT</version>
 
     <properties>
