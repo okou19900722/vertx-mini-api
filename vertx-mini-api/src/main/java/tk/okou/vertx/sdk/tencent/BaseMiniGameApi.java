@@ -10,7 +10,7 @@ import tk.okou.sdk.util.SignatureMethod;
 
 import java.util.List;
 
-@VertxGen
+@VertxGen(concrete = false)
 public interface BaseMiniGameApi extends BaseMiniApi {
     @Fluent
     BaseMiniGameApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);

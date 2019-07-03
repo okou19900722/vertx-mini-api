@@ -6,7 +6,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-@VertxGen
+@VertxGen(concrete = false)
 public interface BaseMiniProgramApi extends BaseMiniApi {
     @Fluent
     BaseMiniProgramApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);

@@ -7,7 +7,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import tk.okou.sdk.BaseApi;
 
-@VertxGen
+@VertxGen(concrete = false)
 public interface BaseMiniApi extends BaseApi {
     @Fluent
     BaseMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);

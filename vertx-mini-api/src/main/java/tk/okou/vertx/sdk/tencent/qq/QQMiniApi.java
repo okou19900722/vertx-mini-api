@@ -7,7 +7,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.tencent.BaseMiniApi;
 
-@VertxGen
+@VertxGen(concrete = false)
 public interface QQMiniApi extends BaseMiniApi {
     @Fluent
     QQMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);

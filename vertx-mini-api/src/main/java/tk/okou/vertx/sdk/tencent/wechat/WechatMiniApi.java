@@ -6,7 +6,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-@VertxGen
+@VertxGen(concrete = false)
 public interface WechatMiniApi {
     @Fluent
     WechatMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
