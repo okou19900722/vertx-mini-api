@@ -1,7 +1,7 @@
 package tk.okou.vertx.sdk.tencent;
 
 import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
@@ -10,6 +10,7 @@ import tk.okou.sdk.util.SignatureMethod;
 
 import java.util.List;
 
+@VertxGen
 public interface BaseMiniGameApi extends BaseMiniApi {
     @Fluent
     BaseMiniGameApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);

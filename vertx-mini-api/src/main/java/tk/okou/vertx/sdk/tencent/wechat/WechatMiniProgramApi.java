@@ -8,6 +8,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.tencent.BaseMiniProgramApi;
 import tk.okou.vertx.sdk.tencent.wechat.impl.WechatMiniProgramApiImpl;
+
 @VertxGen
 public interface WechatMiniProgramApi extends WechatMiniApi, BaseMiniProgramApi {
     static WechatMiniProgramApi create(Vertx vertx, WechatMiniApiOptions options) {
