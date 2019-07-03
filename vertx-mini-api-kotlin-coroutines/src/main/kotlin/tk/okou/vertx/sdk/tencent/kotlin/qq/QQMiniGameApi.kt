@@ -17,6 +17,8 @@ package tk.okou.vertx.sdk.tencent.kotlin.qq
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
+import tk.okou.sdk.util.SignatureMethod
+import tk.okou.vertx.sdk.tencent.model.KVData
 import tk.okou.vertx.sdk.tencent.qq.QQMiniGameApi
 
 suspend fun QQMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
@@ -43,9 +45,27 @@ suspend fun QQMiniGameApi.getAccessTokenAwait(grantType: String, appId: String, 
   }
 }
 
+suspend fun QQMiniGameApi.setUserStorageAwait(accessToken: String, openId: String, sessionKey: String, kvList: List<KVData>): JsonObject {
+  return awaitResult {
+    this.setUserStorage(accessToken, openId, sessionKey, kvList, it)
+  }
+}
+
+suspend fun QQMiniGameApi.setUserStorageAwait(accessToken: String, openId: String, sessionKey: String, signatureMethod: SignatureMethod, kvList: List<KVData>): JsonObject {
+  return awaitResult {
+    this.setUserStorage(accessToken, openId, sessionKey, signatureMethod, kvList, it)
+  }
+}
+
 suspend fun QQMiniGameApi.removeUserStorageAwait(accessToken: String, openId: String, sessionKey: String, keys: List<String>): JsonObject {
   return awaitResult {
     this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
+  }
+}
+
+suspend fun QQMiniGameApi.removeUserStorageAwait(accessToken: String, openId: String, sessionKey: String, signatureMethod: SignatureMethod, key: List<String>): JsonObject {
+  return awaitResult {
+    this.removeUserStorage(accessToken, openId, sessionKey, signatureMethod, key, it)
   }
 }
 
