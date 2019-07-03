@@ -7,6 +7,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import tk.okou.vertx.sdk.tencent.BaseMiniGameApi;
 import tk.okou.vertx.sdk.tencent.qq.impl.QQMiniGameApiImpl;
 import tk.okou.vertx.sdk.tencent.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
@@ -14,7 +15,7 @@ import tk.okou.sdk.util.SignatureMethod;
 import java.util.List;
 
 @VertxGen
-public interface QQMiniGameApi {
+public interface QQMiniGameApi extends BaseMiniGameApi, QQMiniApi {
     static QQMiniGameApi create(Vertx vertx, QQMiniApiOptions options) {
         return new QQMiniGameApiImpl(vertx, options);
     }
