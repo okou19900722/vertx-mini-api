@@ -11,13 +11,13 @@
     </parent>
 
     <groupId>tk.okou</groupId>
-    <artifactId>vertx-wechat-sdk-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>vertx-mini-api-parent</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <modules>
-        <module>vertx-wechat-sdk</module>
-        <module>vertx-wechat-sdk-kotlin-coroutines</module>
+        <module>vertx-mini-api</module>
+        <module>vertx-mini-api-kotlin-coroutines</module>
     </modules>
 
     <properties>
