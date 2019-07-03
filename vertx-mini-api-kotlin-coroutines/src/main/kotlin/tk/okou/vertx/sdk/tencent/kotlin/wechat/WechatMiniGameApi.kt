@@ -18,6 +18,8 @@ package tk.okou.vertx.sdk.tencent.kotlin.wechat
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
+import tk.okou.sdk.util.SignatureMethod
+import tk.okou.vertx.sdk.tencent.model.KVData
 import tk.okou.vertx.sdk.tencent.wechat.Color
 import tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi
 
@@ -42,6 +44,30 @@ suspend fun WechatMiniGameApi.getAccessTokenAwait(appId: String, secret: String)
 suspend fun WechatMiniGameApi.getAccessTokenAwait(grantType: String, appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(grantType, appId, secret, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.setUserStorageAwait(accessToken: String, openId: String, sessionKey: String, kvList: List<KVData>): JsonObject {
+  return awaitResult {
+    this.setUserStorage(accessToken, openId, sessionKey, kvList, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.setUserStorageAwait(accessToken: String, openId: String, sessionKey: String, signatureMethod: SignatureMethod, kvList: List<KVData>): JsonObject {
+  return awaitResult {
+    this.setUserStorage(accessToken, openId, sessionKey, signatureMethod, kvList, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.removeUserStorageAwait(accessToken: String, openId: String, sessionKey: String, keys: List<String>): JsonObject {
+  return awaitResult {
+    this.removeUserStorage(accessToken, openId, sessionKey, keys, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.removeUserStorageAwait(accessToken: String, openId: String, sessionKey: String, signatureMethod: SignatureMethod, key: List<String>): JsonObject {
+  return awaitResult {
+    this.removeUserStorage(accessToken, openId, sessionKey, signatureMethod, key, it)
   }
 }
 

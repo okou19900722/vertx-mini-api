@@ -8,10 +8,14 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
+import tk.okou.sdk.util.SignatureMethod;
 import tk.okou.vertx.sdk.tencent.BaseMiniGameApi;
+import tk.okou.vertx.sdk.tencent.model.KVData;
 import tk.okou.vertx.sdk.tencent.wechat.impl.WechatMiniGameApiImpl;
 
 import java.text.MessageFormat;
+import java.util.List;
+
 @VertxGen
 public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
     @GenIgnore
@@ -44,6 +48,18 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
 
     @Fluent
     WechatMiniGameApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
+    WechatMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
+    WechatMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
+    WechatMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys, Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
+    WechatMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
     WechatMiniGameApi getWXACode(String accessToken, String path, Integer width, Boolean autoColor, Color lineColor, Boolean isHyaline, Handler<Buffer> successConsumer, Handler<AsyncResult<JsonObject>> failHandler);
