@@ -1,4 +1,4 @@
-package tk.okou.vertx.sdk.tencent.model;
+package tk.okou.vertx.sdk.model;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;

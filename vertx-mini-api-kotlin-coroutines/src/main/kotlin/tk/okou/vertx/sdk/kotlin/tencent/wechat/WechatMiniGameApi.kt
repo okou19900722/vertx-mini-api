@@ -19,7 +19,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.sdk.util.SignatureMethod
-import tk.okou.vertx.sdk.tencent.model.KVData
+import tk.okou.vertx.sdk.model.KVData
 import tk.okou.vertx.sdk.tencent.wechat.Color
 import tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi
 

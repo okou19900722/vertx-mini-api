@@ -8,7 +8,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.BaseMiniGameApi;
 import tk.okou.vertx.sdk.tencent.qq.impl.QQMiniGameApiImpl;
-import tk.okou.vertx.sdk.tencent.model.KVData;
+import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
 
 import java.util.List;

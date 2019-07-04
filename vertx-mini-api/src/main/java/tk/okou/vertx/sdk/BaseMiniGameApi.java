@@ -5,7 +5,7 @@ import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
-import tk.okou.vertx.sdk.tencent.model.KVData;
+import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
 
 import java.util.List;

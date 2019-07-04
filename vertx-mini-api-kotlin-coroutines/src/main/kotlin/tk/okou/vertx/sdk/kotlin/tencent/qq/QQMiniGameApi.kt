@@ -18,7 +18,7 @@ package tk.okou.vertx.sdk.kotlin.tencent.qq
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.sdk.util.SignatureMethod
-import tk.okou.vertx.sdk.tencent.model.KVData
+import tk.okou.vertx.sdk.model.KVData
 import tk.okou.vertx.sdk.tencent.qq.QQMiniGameApi
 
 suspend fun QQMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {

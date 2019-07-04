@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.tencent.wechat.AbstractWechatMiniGameApi;
 import tk.okou.vertx.sdk.tencent.wechat.WechatMiniApiOptions;
-import tk.okou.vertx.sdk.tencent.model.KVData;
+import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
 import tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi;
 

@@ -19,7 +19,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.sdk.util.SignatureMethod
 import tk.okou.vertx.sdk.BaseMiniGameApi
-import tk.okou.vertx.sdk.tencent.model.KVData
+import tk.okou.vertx.sdk.model.KVData
 
 suspend fun BaseMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
   return awaitResult {
