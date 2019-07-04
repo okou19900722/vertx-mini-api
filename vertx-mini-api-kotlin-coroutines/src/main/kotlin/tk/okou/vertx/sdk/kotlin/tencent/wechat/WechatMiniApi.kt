@@ -13,31 +13,31 @@
  *
  * You may elect to redistribute this code under either of these licenses.
  */
-package tk.okou.vertx.sdk.tencent.kotlin
+package tk.okou.vertx.sdk.kotlin.tencent.wechat
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
-import tk.okou.vertx.sdk.BaseMiniProgramApi
+import tk.okou.vertx.sdk.tencent.wechat.WechatMiniApi
 
-suspend fun BaseMiniProgramApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
+suspend fun WechatMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
   return awaitResult {
     this.code2session(appId, secret, jsCode, it)
   }
 }
 
-suspend fun BaseMiniProgramApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
+suspend fun WechatMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
   return awaitResult {
     this.code2session(appId, secret, jsCode, grantType, it)
   }
 }
 
-suspend fun BaseMiniProgramApi.getAccessTokenAwait(appId: String, secret: String): JsonObject {
+suspend fun WechatMiniApi.getAccessTokenAwait(appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(appId, secret, it)
   }
 }
 
-suspend fun BaseMiniProgramApi.getAccessTokenAwait(grantType: String, appId: String, secret: String): JsonObject {
+suspend fun WechatMiniApi.getAccessTokenAwait(grantType: String, appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(grantType, appId, secret, it)
   }

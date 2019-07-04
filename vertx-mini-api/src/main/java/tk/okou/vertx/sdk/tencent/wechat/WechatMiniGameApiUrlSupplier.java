@@ -1,6 +1,6 @@
 package tk.okou.vertx.sdk.tencent.wechat;
 
-import tk.okou.vertx.sdk.tencent.BaseMiniGameApiUrlSupplier;
+import tk.okou.vertx.sdk.BaseMiniGameApiUrlSupplier;
 import tk.okou.sdk.util.MessageFormatUtils;
 
 import java.text.MessageFormat;

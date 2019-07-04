@@ -1,4 +1,4 @@
-package tk.okou.vertx.sdk.tencent;
+package tk.okou.vertx.sdk;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AsyncResult;

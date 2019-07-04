@@ -1,6 +1,6 @@
 package tk.okou.vertx.sdk.tencent.qq;
 
-import tk.okou.vertx.sdk.tencent.BaseMiniApiUrlSupplier;
+import tk.okou.vertx.sdk.BaseMiniApiUrlSupplier;
 import tk.okou.sdk.util.MessageFormatUtils;
 
 import java.text.MessageFormat;

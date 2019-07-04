@@ -1,4 +1,4 @@
-package tk.okou.vertx.sdk.tencent;
+package tk.okou.vertx.sdk;
 
 public interface BaseMiniApiUrlSupplier {
 

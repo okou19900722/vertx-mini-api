@@ -13,7 +13,7 @@
  *
  * You may elect to redistribute this code under either of these licenses.
  */
-package tk.okou.vertx.sdk.tencent.kotlin
+package tk.okou.vertx.sdk.kotlin
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult

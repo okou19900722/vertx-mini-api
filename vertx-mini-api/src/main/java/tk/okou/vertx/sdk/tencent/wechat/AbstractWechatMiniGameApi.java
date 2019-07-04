@@ -9,7 +9,7 @@ import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
-import tk.okou.vertx.sdk.tencent.AbstractMiniGameApi;
+import tk.okou.vertx.sdk.AbstractMiniGameApi;
 import tk.okou.sdk.exception.Not200Exception;
 import tk.okou.vertx.sdk.tencent.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;

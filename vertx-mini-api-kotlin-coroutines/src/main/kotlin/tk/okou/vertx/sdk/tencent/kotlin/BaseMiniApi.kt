@@ -17,7 +17,7 @@ package tk.okou.vertx.sdk.tencent.kotlin
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
-import tk.okou.vertx.sdk.tencent.BaseMiniApi
+import tk.okou.vertx.sdk.BaseMiniApi
 
 suspend fun BaseMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
   return awaitResult {

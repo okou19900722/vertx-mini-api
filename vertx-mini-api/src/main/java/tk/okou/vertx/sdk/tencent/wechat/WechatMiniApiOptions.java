@@ -2,7 +2,7 @@ package tk.okou.vertx.sdk.tencent.wechat;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
-import tk.okou.vertx.sdk.tencent.BaseMiniApiOptions;
+import tk.okou.vertx.sdk.BaseMiniApiOptions;
 
 @DataObject(generateConverter = true, publicConverter = false)
 public class WechatMiniApiOptions extends BaseMiniApiOptions {

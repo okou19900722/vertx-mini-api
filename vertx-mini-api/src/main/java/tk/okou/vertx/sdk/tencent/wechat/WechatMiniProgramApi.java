@@ -6,7 +6,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import tk.okou.vertx.sdk.tencent.BaseMiniProgramApi;
+import tk.okou.vertx.sdk.BaseMiniProgramApi;
 import tk.okou.vertx.sdk.tencent.wechat.impl.WechatMiniProgramApiImpl;
 
 @VertxGen

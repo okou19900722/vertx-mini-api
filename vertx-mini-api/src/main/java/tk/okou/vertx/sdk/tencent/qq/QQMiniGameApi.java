@@ -1,13 +1,12 @@
 package tk.okou.vertx.sdk.tencent.qq;
 
 import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import tk.okou.vertx.sdk.tencent.BaseMiniGameApi;
+import tk.okou.vertx.sdk.BaseMiniGameApi;
 import tk.okou.vertx.sdk.tencent.qq.impl.QQMiniGameApiImpl;
 import tk.okou.vertx.sdk.tencent.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
