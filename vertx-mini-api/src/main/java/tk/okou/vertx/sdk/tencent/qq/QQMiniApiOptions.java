@@ -10,6 +10,5 @@ public class QQMiniApiOptions extends BaseMiniApiOptions {
         this.setDefaultHost("api.q.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
     }
     public QQMiniApiOptions(JsonObject json) {
-//        this.setDefaultHost("api.q.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
     }
 }
