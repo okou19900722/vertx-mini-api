@@ -8,8 +8,8 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.impl.logging.Logger;
+import io.vertx.core.impl.logging.LoggerFactory;
 import tk.okou.sdk.exception.Not200Exception;
 
 public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupplier {
@@ -47,7 +47,6 @@ public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupp
     }
 
     private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-        //noinspection deprecation
         HttpClientRequest request = httpClient.get(uri, responseHandler(handler));
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
@@ -56,31 +55,35 @@ public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupp
                 .end();
     }
 
-    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<JsonObject>> handler) {
-        return response -> {
-            int statusCode = response.statusCode();
-            if (statusCode == 200) {
-                response.bodyHandler(body -> {
-                    JsonObject data = body.toJsonObject();
-                    Integer errcode = data.getInteger("errcode");
-                    if (errcode != null && errcode != 0) {
-                        if (errcode == 40163) {
-                            logger.warn("code been used");
-                        } else {
-                            logger.error(response.request().uri() + " - " + data);
-                        }
-                    }
-                    success(handler, body.toJsonObject());
-                });
-                response.exceptionHandler(e -> logger.error("response handler fail", e));
+    private Handler<AsyncResult<HttpClientResponse>> responseHandler(Handler<AsyncResult<JsonObject>> handler){
+        return ar -> {
+            if (ar.failed()) {
+                fail(handler, ar.cause());
             } else {
-                fail(handler, new Not200Exception(statusCode));
+                HttpClientResponse response = ar.result();
+                int statusCode = response.statusCode();
+                if (statusCode == 200) {
+                    response.bodyHandler(body -> {
+                        JsonObject data = body.toJsonObject();
+                        Integer errcode = data.getInteger("errcode");
+                        if (errcode != null && errcode != 0) {
+                            if (errcode == 40163) {
+                                logger.warn("code been used");
+                            } else {
+                                logger.error(response.request().uri() + " - " + data);
+                            }
+                        }
+                        success(handler, body.toJsonObject());
+                    });
+                    response.exceptionHandler(e -> logger.error("response handler fail", e));
+                } else {
+                    fail(handler, new Not200Exception(statusCode));
+                }
             }
         };
     }
 
     protected void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        //noinspection deprecation
         HttpClientRequest request = httpClient.post(uri, responseHandler(handler));
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
