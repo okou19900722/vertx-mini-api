@@ -19,14 +19,14 @@ public class ToutiaoMiniGameApiImpl extends AbstractToutiaoMiniGameApi implement
 
     @Override
     public ToutiaoMiniGameApiImpl code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler) {
-        super.code2session(appId, secret, jsCode, handler);
+//        super.code2session(appId, secret, jsCode, handler);
+        super.code2session(appId, secret, jsCode, null, handler);
         return this;
     }
 
     @Override
     public ToutiaoMiniGameApiImpl code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
-        super.code2session(appId, secret, jsCode, grantType, handler);
-        return this;
+        throw new RuntimeException("头像小程序不需要指定grantType");
     }
 
     @Override
