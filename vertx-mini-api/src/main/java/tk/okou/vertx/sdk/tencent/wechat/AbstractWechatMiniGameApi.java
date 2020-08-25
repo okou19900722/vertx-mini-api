@@ -136,25 +136,20 @@ public abstract class AbstractWechatMiniGameApi extends AbstractMiniGameApi impl
             failHandler.handle(Future.failedFuture(new NullPointerException("accessToken is null")));
             return this;
         }
-        Handler<AsyncResult<HttpClientResponse>> responseHandler = ar -> {
-            if (ar.failed()) {
-                fail(failHandler, ar.cause());
-            } else {
-                HttpClientResponse response = ar.result();
-                int statusCode = response.statusCode();
-                if (statusCode == 200) {
-                    String contentType = response.headers().get(HttpHeaders.CONTENT_TYPE);
-                    if (contentType.contains("application/json")) {
-                        response.bodyHandler(body -> success(failHandler, body.toJsonObject()));
-                    } else {
-                        response.bodyHandler(successConsumer);
-                    }
+        Handler<HttpClientResponse> responseHandler = response -> {
+            int statusCode = response.statusCode();
+            if (statusCode == 200) {
+                String contentType = response.headers().get(HttpHeaders.CONTENT_TYPE);
+                if (contentType.contains("application/json")) {
+                    response.bodyHandler(body -> success(failHandler, body.toJsonObject()));
                 } else {
-                    fail(failHandler, new Not200Exception(statusCode));
+                    response.bodyHandler(successConsumer);
                 }
+            } else {
+                fail(failHandler, new Not200Exception(statusCode));
             }
         };
-        HttpClientRequest request = httpClient.post(MessageFormatUtils.format(urlFormatter, accessToken), responseHandler);
+        HttpClientRequest request = httpClient.post(MessageFormatUtils.format(urlFormatter, accessToken)).handler(responseHandler);
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
         }
