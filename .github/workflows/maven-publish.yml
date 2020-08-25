@@ -22,11 +22,4 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Release
-      uses: qcastel/github-actions-maven-release@master
-      with:
-        release-branch-name: "master"
-
-        git-release-bot-name: "github-actions[bot]"
-        git-release-bot-email: "github-actions[bot]@users.noreply.github.com"
-
-        access-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+      uses: mvn deploy -Dregistry=https://maven.pkg.github.com/okou19900722 -Dtoken=${{ secrets.GITHUB_ACCESS_TOKEN }}
