@@ -5,7 +5,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
@@ -149,12 +148,7 @@ public abstract class AbstractWechatMiniGameApi extends AbstractMiniGameApi impl
                 fail(failHandler, new Not200Exception(statusCode));
             }
         };
-        HttpClientRequest request = httpClient.post(MessageFormatUtils.format(urlFormatter, accessToken)).handler(responseHandler);
-        if (options.getTimeout() != null) {
-            request.setTimeout(options.getTimeout());
-        }
-        request.exceptionHandler(e -> fail(failHandler, e))
-                .end(postParam.toString());
+        this.post(MessageFormatUtils.format(urlFormatter, accessToken), postParam.toString()).onSuccess(responseHandler).onFailure(cause -> fail(failHandler, cause));
         return this;
     }
 }

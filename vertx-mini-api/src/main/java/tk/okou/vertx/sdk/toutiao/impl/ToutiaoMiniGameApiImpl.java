@@ -19,7 +19,6 @@ public class ToutiaoMiniGameApiImpl extends AbstractToutiaoMiniGameApi implement
 
     @Override
     public ToutiaoMiniGameApiImpl code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler) {
-//        super.code2session(appId, secret, jsCode, handler);
         super.code2session(appId, secret, jsCode, null, handler);
         return this;
     }

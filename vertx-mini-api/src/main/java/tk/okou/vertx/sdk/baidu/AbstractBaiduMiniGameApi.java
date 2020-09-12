@@ -1,6 +1,7 @@
 package tk.okou.vertx.sdk.baidu;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -33,8 +34,12 @@ public abstract class AbstractBaiduMiniGameApi extends AbstractMiniApi implement
 
     @Override
     public AbstractBaiduMiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
-        getAccessToken("client_credentials", appId, secret, handler);
+        super.getAccessToken(appId, secret, handler);
         return this;
     }
 
+    @Override
+    public Future<JsonObject> getAccessToken(String appId, String secret) {
+        return super.getAccessToken("client_credentials", appId, secret);
+    }
 }

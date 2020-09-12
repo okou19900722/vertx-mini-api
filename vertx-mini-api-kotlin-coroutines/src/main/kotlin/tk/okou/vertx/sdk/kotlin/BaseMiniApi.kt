@@ -19,24 +19,28 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.vertx.sdk.BaseMiniApi
 
+@Deprecated(message = "Instead use code2session returning a future and chain with await()", replaceWith = ReplaceWith("code2session(appId, secret, jsCode).await()"))
 suspend fun BaseMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
   return awaitResult {
     this.code2session(appId, secret, jsCode, it)
   }
 }
 
+@Deprecated(message = "Instead use code2session returning a future and chain with await()", replaceWith = ReplaceWith("code2session(appId, secret, jsCode, grantType).await()"))
 suspend fun BaseMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
   return awaitResult {
     this.code2session(appId, secret, jsCode, grantType, it)
   }
 }
 
+@Deprecated(message = "Instead use getAccessToken returning a future and chain with await()", replaceWith = ReplaceWith("getAccessToken(appId, secret).await()"))
 suspend fun BaseMiniApi.getAccessTokenAwait(appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(appId, secret, it)
   }
 }
 
+@Deprecated(message = "Instead use getAccessToken returning a future and chain with await()", replaceWith = ReplaceWith("getAccessToken(grantType, appId, secret).await()"))
 suspend fun BaseMiniApi.getAccessTokenAwait(grantType: String, appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(grantType, appId, secret, it)

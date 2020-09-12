@@ -5,12 +5,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import tk.okou.sdk.util.SignatureMethod;
-import tk.okou.vertx.sdk.BaseMiniGameApi;
 import tk.okou.vertx.sdk.baidu.impl.BaiduMiniGameApiImpl;
-import tk.okou.vertx.sdk.model.KVData;
-
-import java.util.List;
 
 public interface BaiduMiniGameApi extends BaiduMiniApi {
     static BaiduMiniGameApi create(Vertx vertx) {

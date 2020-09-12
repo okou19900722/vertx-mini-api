@@ -1,6 +1,7 @@
 package tk.okou.vertx.sdk;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
@@ -45,46 +46,60 @@ public abstract class AbstractMiniGameApi extends AbstractMiniApi implements Bas
 
     @Override
     public AbstractMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
-        return setUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, kvList, handler);
+        setUserStorage(accessToken, openId, sessionKey, kvList).onComplete(handler);
+        return this;
+    }
+
+    @Override
+    public Future<JsonObject> setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList) {
+        return this.setUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, kvList);
+    }
+
+    @Override
+    public Future<JsonObject> setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList) {
+        JsonObject data = new JsonObject();
+        data.put("kv_list", new JsonArray(kvList));
+        return doSignature(sessionKey, signatureMethod, data, signature -> getUrlOfSetUserStorage(accessToken, signature, openId, signatureMethod.signatureMethod));
     }
 
     @Override
     public AbstractMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler) {
-        return setUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(kvList), handler);
-    }
-
-    private AbstractMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, JsonArray kvList, Handler<AsyncResult<JsonObject>> handler) {
-        JsonObject data = new JsonObject();
-        data.put("kv_list", kvList);
-        doSignature(sessionKey, signatureMethod, data, signature -> getUrlOfSetUserStorage(accessToken, signature, openId, signatureMethod.signatureMethod), handler);
+        setUserStorage(accessToken, openId, sessionKey, signatureMethod, kvList).onComplete(handler);
         return this;
     }
 
-    private void doSignature(String sessionKey, SignatureMethod signatureMethod, JsonObject data, Function<String, String> urlSupplier, Handler<AsyncResult<JsonObject>> handler) {
+    private Future<JsonObject> doSignature(String sessionKey, SignatureMethod signatureMethod, JsonObject data, Function<String, String> urlSupplier) {
         try {
             String postBody = data.encode();
             String signature = signatureMethod.signature(postBody, sessionKey);
             String url = urlSupplier.apply(signature);
-            post(url, postBody, handler);
+            return this.postJsonObject(url, postBody);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            fail(handler, e);
+            return Future.failedFuture(e);
         }
-    }
-
-    private AbstractMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler) {
-        JsonObject data = new JsonObject();
-        data.put("key", key);
-        doSignature(sessionKey, signatureMethod, data, signature -> getUrlOfRemoveUserStorage(accessToken, signature, openId, signatureMethod.signatureMethod), handler);
-        return this;
     }
 
     @Override
     public AbstractMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys, Handler<AsyncResult<JsonObject>> handler) {
-        return removeUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, keys, handler);
+        removeUserStorage(accessToken, openId, sessionKey, keys).onComplete(handler);
+        return this;
+    }
+
+    @Override
+    public Future<JsonObject> removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys) {
+        return this.removeUserStorage(accessToken, openId, sessionKey, SignatureMethod.HMAC_SHA256, keys);
+    }
+
+    @Override
+    public Future<JsonObject> removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key) {
+        JsonObject data = new JsonObject();
+        data.put("key", new JsonArray(key));
+        return doSignature(sessionKey, signatureMethod, data, signature -> getUrlOfRemoveUserStorage(accessToken, signature, openId, signatureMethod.signatureMethod));
     }
 
     @Override
     public AbstractMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
-        return removeUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(key), handler);
+        removeUserStorage(accessToken, openId, sessionKey, signatureMethod, key).onComplete(handler);
+        return this;
     }
 }

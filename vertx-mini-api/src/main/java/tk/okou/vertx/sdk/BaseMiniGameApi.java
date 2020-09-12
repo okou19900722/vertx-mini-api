@@ -3,6 +3,7 @@ package tk.okou.vertx.sdk;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.model.KVData;
@@ -27,13 +28,21 @@ public interface BaseMiniGameApi extends BaseMiniApi {
     @Fluent
     BaseMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
 
+    Future<JsonObject> setUserStorage(String accessToken, String openId, String sessionKey, List<KVData> kvList);
+
     @Fluent
     BaseMiniGameApi setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList, Handler<AsyncResult<JsonObject>> handler);
+
+    Future<JsonObject> setUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<KVData> kvList);
 
     @Fluent
     BaseMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys, Handler<AsyncResult<JsonObject>> handler);
 
+    Future<JsonObject> removeUserStorage(String accessToken, String openId, String sessionKey, List<String> keys);
+
     @Fluent
     BaseMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
+
+    Future<JsonObject> removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key);
 
 }

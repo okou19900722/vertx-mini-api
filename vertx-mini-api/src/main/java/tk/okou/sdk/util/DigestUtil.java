@@ -4,7 +4,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public class DigestUtil {
     private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();

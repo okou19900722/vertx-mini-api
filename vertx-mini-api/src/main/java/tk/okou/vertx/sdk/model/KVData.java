@@ -33,4 +33,8 @@ public class KVData {
         KVData other = (KVData) obj;
         return other.key.equals(key) && other.value.equals(value);
     }
+
+    public String toJson() {
+        return null;
+    }
 }

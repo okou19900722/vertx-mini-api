@@ -10,6 +10,7 @@ public class WechatMiniApiOptions extends BaseMiniApiOptions {
         this.setDefaultHost("api.weixin.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
     }
     public WechatMiniApiOptions(JsonObject json) {
-//        this.setDefaultHost("api.weixin.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
+        super(json);
+        WechatMiniApiOptionsConverter.fromJson(json, this);
     }
 }

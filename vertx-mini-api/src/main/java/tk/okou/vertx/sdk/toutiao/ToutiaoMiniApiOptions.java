@@ -10,6 +10,7 @@ public class ToutiaoMiniApiOptions extends BaseMiniApiOptions {
         this.setDefaultHost("developer.toutiao.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
     }
     public ToutiaoMiniApiOptions(JsonObject json) {
-//        this.setDefaultHost("api.q.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
+        super(json);
+        ToutiaoMiniApiOptionsConverter.fromJson(json, this);
     }
 }

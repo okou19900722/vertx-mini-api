@@ -2,15 +2,16 @@ package tk.okou.vertx.sdk;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientRequest;
-import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.*;
+import io.vertx.core.impl.logging.Logger;
+import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import tk.okou.sdk.exception.Not200Exception;
+
+import java.util.function.Function;
 
 public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupplier {
     private static final Logger logger = LoggerFactory.getLogger(AbstractMiniApi.class);
@@ -24,66 +25,91 @@ public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupp
 
     @Fluent
     public AbstractMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler) {
-        return code2session(appId, secret, jsCode, "authorization_code", handler);
+        code2session(appId, secret, jsCode).onComplete(handler);
+        return this;
+    }
+
+    @Override
+    public Future<JsonObject> code2session(String appId, String secret, String jsCode) {
+        return this.code2session(appId, secret, jsCode, "authorization_code");
     }
 
     @Fluent
     public AbstractMiniApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
-        String url = getUrlOfCode2session(appId, secret, jsCode, grantType);
-        get(url, handler);
+        this.code2session(appId, secret, jsCode, grantType).onComplete(handler);
         return this;
+    }
+
+    @Override
+    public Future<JsonObject> code2session(String appId, String secret, String jsCode, String grantType) {
+        String url = getUrlOfCode2session(appId, secret, jsCode, grantType);
+        return getJsonObject(url);
     }
 
     @Fluent
     public AbstractMiniApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
-        return getAccessToken("client_credential", appId, secret, handler);
+        getAccessToken(appId, secret).onComplete(handler);
+        return this;
+    }
+
+    @Override
+    public Future<JsonObject> getAccessToken(String appId, String secret) {
+        return getAccessToken(appId, secret, "client_credential");
     }
 
     @Fluent
     public AbstractMiniApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
-        String url = getUrlOfGetAccessToken(grantType, appId, secret);
-        get(url, handler);
+        this.getAccessToken(grantType, appId, secret).onComplete(handler);
         return this;
     }
 
-    private void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
-        HttpClientRequest request = httpClient.get(uri).handler(responseHandler(handler));
-        if (options.getTimeout() != null) {
-            request.setTimeout(options.getTimeout());
-        }
-        request.exceptionHandler(e -> fail(handler, e))
-                .end();
+    @Override
+    public Future<JsonObject> getAccessToken(String grantType, String appId, String secret) {
+        String url = getUrlOfGetAccessToken(grantType, appId, secret);
+        return getJsonObject(url);
     }
 
-    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<JsonObject>> handler) {
+    private Future<JsonObject> getJsonObject(String uri) {
+        return this.request(uri, HttpMethod.GET, HttpClientRequest::send).compose(this.wrapToJson());
+    }
+
+    protected Future<JsonObject> postJsonObject(String uri, String data) {
+        return this.post(uri, data).compose(this.wrapToJson());
+    }
+
+    protected Future<HttpClientResponse> post(String uri, String data) {
+        return this.request(uri, HttpMethod.POST, request -> request.send(data));
+    }
+
+    private Function<HttpClientResponse, Future<JsonObject>> wrapToJson() {
         return response -> {
             int statusCode = response.statusCode();
             if (statusCode == 200) {
-                response.bodyHandler(body -> {
-                    JsonObject data = body.toJsonObject();
-                    Integer errcode = data.getInteger("errcode");
+                return response.body().map(body -> {
+                    JsonObject json = body.toJsonObject();
+                    Integer errcode = json.getInteger("errcode");
                     if (errcode != null && errcode != 0) {
                         if (errcode == 40163) {
                             logger.warn("code been used");
                         } else {
-                            logger.error(response.request().uri() + " - " + data);
+                            logger.error(response.request().getURI() + " - " + json);
                         }
                     }
-                    success(handler, body.toJsonObject());
+                    return json;
                 });
-                response.exceptionHandler(e -> logger.error("response handler fail", e));
             } else {
-                fail(handler, new Not200Exception(statusCode));
+                return Future.failedFuture(new Not200Exception(statusCode));
             }
         };
     }
 
-    protected void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        HttpClientRequest request = httpClient.post(uri, responseHandler(handler));
+    protected Future<HttpClientResponse> request(String uri, HttpMethod httpMethod, Function<HttpClientRequest, Future<HttpClientResponse>> sender) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setMethod(httpMethod);
+        requestOptions.setURI(uri);
         if (options.getTimeout() != null) {
-            request.setTimeout(options.getTimeout());
+            requestOptions.setTimeout(options.getTimeout());
         }
-        request.exceptionHandler(e -> fail(handler, e))
-                .end(data);
+        return httpClient.request(requestOptions).compose(sender);
     }
 }
