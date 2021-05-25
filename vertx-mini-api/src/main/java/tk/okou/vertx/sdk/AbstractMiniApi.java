@@ -7,6 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -79,7 +80,13 @@ public abstract class AbstractMiniApi implements BaseMiniApi, BaseMiniApiUrlSupp
     }
 
     protected void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
+        this.post(uri, data, null, handler);
+    }
+    protected void post(String uri, String data, String contentType, Handler<AsyncResult<JsonObject>> handler) {
         HttpClientRequest request = httpClient.post(uri, responseHandler(handler));
+        if (contentType != null) {
+            request.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
+        }
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
         }

@@ -46,5 +46,7 @@ public interface QQMiniGameApi extends BaseMiniGameApi, QQMiniApi {
     @Fluent
     QQMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler);
 
+    @Fluent
+    QQMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, String page, JsonObject data, String emphasisKeyWord, String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler);
 
 }

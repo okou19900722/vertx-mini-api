@@ -6,11 +6,11 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
 public interface BaseApi {
-    default void fail(Handler<AsyncResult<JsonObject>> handler, Throwable throwable) {
+    default <T> void fail(Handler<AsyncResult<T>> handler, Throwable throwable) {
         handler.handle(Future.failedFuture(throwable));
     }
 
-    default void fail(Handler<AsyncResult<JsonObject>> handler, String message) {
+    default <T> void fail(Handler<AsyncResult<T>> handler, String message) {
         handler.handle(Future.failedFuture(message));
     }
 
