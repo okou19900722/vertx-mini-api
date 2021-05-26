@@ -69,3 +69,9 @@ suspend fun QQMiniGameApi.removeUserStorageAwait(accessToken: String, openId: St
   }
 }
 
+suspend fun QQMiniGameApi.sendSubscriptionMessageAwait(accessToken: String, toUserOpenId: String, templateId: String, page: String?, data: JsonObject?, emphasisKeyWord: String?, oacAppId: String?, useRobot: Int): JsonObject {
+  return awaitResult {
+    this.sendSubscriptionMessage(accessToken, toUserOpenId, templateId, page, data, emphasisKeyWord, oacAppId, useRobot, it)
+  }
+}
+
