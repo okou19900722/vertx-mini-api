@@ -7,10 +7,10 @@ import java.security.NoSuchAlgorithmException;
 
 public class DigestUtil {
     private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
-    public static String hmacSha256(String data, String sessionKey) throws NoSuchAlgorithmException, InvalidKeyException {
+    public static String hmacSha256(String data, String secretKey) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmacSha256 = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secretKey = new SecretKeySpec(sessionKey.getBytes(), "HmacSHA256");
-        hmacSha256.init(secretKey);
+        SecretKeySpec sk = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
+        hmacSha256.init(sk);
         return toHex(hmacSha256.doFinal(data.getBytes()));
     }
     private static String toHex(byte[] bytes) {

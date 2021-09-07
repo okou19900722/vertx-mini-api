@@ -6,8 +6,8 @@ import java.security.NoSuchAlgorithmException;
 public enum SignatureMethod {
     HMAC_SHA256("hmac_sha256") {
         @Override
-        public String signature(String data, String sessionKey) throws InvalidKeyException, NoSuchAlgorithmException {
-            return DigestUtil.hmacSha256(data, sessionKey);
+        public String signature(String data, String secretKey) throws InvalidKeyException, NoSuchAlgorithmException {
+            return DigestUtil.hmacSha256(data, secretKey);
         }
     };
     public final String signatureMethod;
@@ -20,5 +20,5 @@ public enum SignatureMethod {
         return signatureMethod;
     }
 
-    public abstract String signature(String data, String sessionKey) throws InvalidKeyException, NoSuchAlgorithmException;
+    public abstract String signature(String data, String secretKey) throws InvalidKeyException, NoSuchAlgorithmException;
 }

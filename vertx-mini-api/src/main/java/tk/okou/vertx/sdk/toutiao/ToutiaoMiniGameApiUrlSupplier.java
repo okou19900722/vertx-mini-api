@@ -1,8 +1,6 @@
 package tk.okou.vertx.sdk.toutiao;
 
-import tk.okou.vertx.sdk.BaseMiniGameApiUrlSupplier;
-
-public interface ToutiaoMiniGameApiUrlSupplier extends BaseMiniGameApiUrlSupplier, ToutiaoMiniApiUrlSupplier {
+public interface ToutiaoMiniGameApiUrlSupplier extends ToutiaoMiniApiUrlSupplier {
 
     @Override
     default String getUrlOfSetUserStorage(String accessToken, String signature, String openId, String signatureMethod) {

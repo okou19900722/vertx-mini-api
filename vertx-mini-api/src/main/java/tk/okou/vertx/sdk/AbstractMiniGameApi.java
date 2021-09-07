@@ -8,10 +8,7 @@ import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.sdk.util.SignatureMethod;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.function.Function;
 
 
 public abstract class AbstractMiniGameApi extends AbstractMiniApi implements BaseMiniGameApi, BaseMiniGameApiUrlSupplier {
@@ -58,17 +55,6 @@ public abstract class AbstractMiniGameApi extends AbstractMiniApi implements Bas
         data.put("kv_list", kvList);
         doSignature(sessionKey, signatureMethod, data, signature -> getUrlOfSetUserStorage(accessToken, signature, openId, signatureMethod.signatureMethod), handler);
         return this;
-    }
-
-    private void doSignature(String sessionKey, SignatureMethod signatureMethod, JsonObject data, Function<String, String> urlSupplier, Handler<AsyncResult<JsonObject>> handler) {
-        try {
-            String postBody = data.encode();
-            String signature = signatureMethod.signature(postBody, sessionKey);
-            String url = urlSupplier.apply(signature);
-            post(url, postBody, handler);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            fail(handler, e);
-        }
     }
 
     private AbstractMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, JsonArray key, Handler<AsyncResult<JsonObject>> handler) {

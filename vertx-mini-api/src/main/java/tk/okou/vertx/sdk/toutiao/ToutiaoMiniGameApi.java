@@ -1,6 +1,7 @@
 package tk.okou.vertx.sdk.toutiao;
 
 import io.vertx.codegen.annotations.Fluent;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -12,7 +13,8 @@ import tk.okou.vertx.sdk.toutiao.impl.ToutiaoMiniGameApiImpl;
 
 import java.util.List;
 
-public interface ToutiaoMiniGameApi extends ToutiaoMiniApi, BaseMiniGameApi {
+@VertxGen
+public interface ToutiaoMiniGameApi extends ToutiaoMiniApi {
     static ToutiaoMiniGameApi create(Vertx vertx) {
         return new ToutiaoMiniGameApiImpl(vertx, new ToutiaoMiniApiOptions());
     }
@@ -22,10 +24,7 @@ public interface ToutiaoMiniGameApi extends ToutiaoMiniApi, BaseMiniGameApi {
     }
 
     @Fluent
-    ToutiaoMiniGameApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
-
-    @Fluent
-    ToutiaoMiniGameApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler);
+    ToutiaoMiniGameApi code2session(String appId, String secret, String jsCode, String anonymousCode, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
     ToutiaoMiniGameApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);

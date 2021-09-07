@@ -21,15 +21,9 @@ import tk.okou.sdk.util.SignatureMethod
 import tk.okou.vertx.sdk.model.KVData
 import tk.okou.vertx.sdk.toutiao.ToutiaoMiniApi
 
-suspend fun ToutiaoMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String): JsonObject {
+suspend fun ToutiaoMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String, anonymousCode: String): JsonObject {
   return awaitResult {
-    this.code2session(appId, secret, jsCode, it)
-  }
-}
-
-suspend fun ToutiaoMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
-  return awaitResult {
-    this.code2session(appId, secret, jsCode, grantType, it)
+    this.code2session(appId, secret, jsCode, anonymousCode, it)
   }
 }
 
