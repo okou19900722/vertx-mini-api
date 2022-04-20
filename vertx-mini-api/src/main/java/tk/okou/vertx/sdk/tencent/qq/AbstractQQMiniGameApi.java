@@ -85,7 +85,7 @@ public abstract class AbstractQQMiniGameApi extends AbstractMiniGameApi implemen
         if (useRobot > 0) {
             postBody.put("use_robot", useRobot);
         }
-        post(url, postBody.encode(), "application/json", handler);
+        postWithJsonResponse(url, postBody.encode(), "application/json", handler);
         return this;
     }
 }

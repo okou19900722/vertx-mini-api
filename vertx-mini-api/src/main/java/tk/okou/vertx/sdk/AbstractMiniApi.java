@@ -21,7 +21,7 @@ public abstract class AbstractMiniApi extends AbstractApi implements BaseMiniApi
     @Fluent
     public AbstractMiniApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
         String url = getUrlOfCode2session(appId, secret, jsCode, grantType);
-        get(url, handler);
+        getWithJsonResponse(url, handler);
         return this;
     }
 
@@ -33,7 +33,7 @@ public abstract class AbstractMiniApi extends AbstractApi implements BaseMiniApi
     @Fluent
     public AbstractMiniApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
         String url = getUrlOfGetAccessToken(grantType, appId, secret);
-        get(url, handler);
+        getWithJsonResponse(url, handler);
         return this;
     }
 

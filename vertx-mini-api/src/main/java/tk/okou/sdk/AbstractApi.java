@@ -3,6 +3,7 @@ package tk.okou.sdk;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
@@ -28,7 +29,11 @@ public abstract class AbstractApi implements BaseApi {
         this.httpClient = vertx.createHttpClient(options);
     }
 
-    protected void get(String uri, Handler<AsyncResult<JsonObject>> handler) {
+    protected void getWithJsonResponse(String uri, Handler<AsyncResult<JsonObject>> handler) {
+        this.get(uri, this.wrapBufferToJson(uri, handler));
+    }
+
+    protected void get(String uri, Handler<AsyncResult<Buffer>> handler) {
         HttpClientRequest request = httpClient.get(uri).handler(responseHandler(handler));
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
@@ -37,34 +42,49 @@ public abstract class AbstractApi implements BaseApi {
                 .end();
     }
 
-    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<JsonObject>> handler) {
+    private void readFromResponse(HttpClientResponse response, Handler<AsyncResult<Buffer>> handler) {
+        int statusCode = response.statusCode();
+        if (statusCode == 200) {
+            response.bodyHandler(body -> {
+                success(handler, body);
+            });
+            response.exceptionHandler(e -> logger.error("response handler fail", e));
+        } else {
+            fail(handler, new Not200Exception(statusCode));
+        }
+    }
+
+    private Handler<HttpClientResponse> responseHandler(Handler<AsyncResult<Buffer>> handler) {
         return response -> {
-            int statusCode = response.statusCode();
-            if (statusCode == 200) {
-                response.bodyHandler(body -> {
-                    JsonObject data = body.toJsonObject();
-                    Integer errcode = data.getInteger("errcode");
-                    if (errcode != null && errcode != 0) {
-                        if (errcode == 40163) {
-                            logger.warn("code been used");
-                        } else {
-                            logger.error(response.request().uri() + " - " + data);
-                        }
-                    }
-                    success(handler, body.toJsonObject());
-                });
-                response.exceptionHandler(e -> logger.error("response handler fail", e));
-            } else {
-                fail(handler, new Not200Exception(statusCode));
-            }
+            this.readFromResponse(response, handler);
         };
     }
 
-    protected void post(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
-        this.post(uri, data, null, handler);
+    protected void postWithJsonResponse(String uri, String data, Handler<AsyncResult<JsonObject>> handler) {
+        this.postWithJsonResponse(uri, data, null, handler);
     }
 
-    protected void post(String uri, String data, String contentType, Handler<AsyncResult<JsonObject>> handler) {
+    protected void postWithJsonResponse(String uri, String data, String contentType, Handler<AsyncResult<JsonObject>> handler) {
+        this.post(uri, data, contentType, this.wrapBufferToJson(uri, handler));
+    }
+
+    private Handler<AsyncResult<Buffer>> wrapBufferToJson(String uri, Handler<AsyncResult<JsonObject>> handler) {
+        return ar -> handler.handle(ar.map(body -> this.bufferToJson(uri, body)));
+    }
+    protected JsonObject bufferToJson(String uri, Buffer buffer) {
+        JsonObject data = buffer.toJsonObject();
+        Integer errcode = data.getInteger("errcode");
+        if (errcode != null && errcode != 0) {
+            if (errcode == 40163) {
+                logger.warn("code been used");
+            } else {
+                logger.error(uri + " - " + data);
+            }
+        }
+        return data;
+    }
+
+    protected void post(String uri, String data, String contentType, Handler<AsyncResult<Buffer>> handler) {
         HttpClientRequest request = httpClient.post(uri, responseHandler(handler));
         if (contentType != null) {
             request.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
@@ -81,7 +101,7 @@ public abstract class AbstractApi implements BaseApi {
             String postBody = data.encode();
             String signature = signatureMethod.signature(postBody, secretKey);
             String url = urlSupplier.apply(signature);
-            post(url, postBody, handler);
+            postWithJsonResponse(url, postBody, handler);
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
             fail(handler, e);
         }

@@ -20,14 +20,14 @@ public class AbstractToutiaoMiniGameApi extends AbstractApi implements ToutiaoMi
 
     public AbstractToutiaoMiniGameApi code2session(String appId, String secret, String jsCode, String anonymousCode, Handler<AsyncResult<JsonObject>> handler) {
         String url = getUrlOfCode2session(appId, secret, jsCode, anonymousCode);
-        get(url, handler);
+        getWithJsonResponse(url, handler);
         return this;
     }
 
     @Override
     public AbstractToutiaoMiniGameApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
         String url = getUrlOfGetAccessToken(grantType, appId, secret);
-        get(url, handler);
+        getWithJsonResponse(url, handler);
         return this;
     }
 
