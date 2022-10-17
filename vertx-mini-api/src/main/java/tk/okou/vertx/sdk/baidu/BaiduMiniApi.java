@@ -11,9 +11,6 @@ public interface BaiduMiniApi extends BaseMiniApi {
     BaiduMiniApi code2session(String clientId, String sk, String code, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
-    BaiduMiniApi code2session(String clientId, String sk, String code, String grantType, Handler<AsyncResult<JsonObject>> handler);
-
-    @Fluent
     BaiduMiniApi getAccessToken(String clientId, String sk, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent

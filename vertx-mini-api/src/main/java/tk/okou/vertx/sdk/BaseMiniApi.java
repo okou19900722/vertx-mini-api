@@ -9,16 +9,9 @@ import tk.okou.sdk.BaseApi;
 
 @VertxGen(concrete = false)
 public interface BaseMiniApi extends BaseApi {
-    @Fluent
-    BaseMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
+	@Fluent
+	BaseMiniApi code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler);
 
-    @Fluent
-    BaseMiniApi code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler);
-
-    @Fluent
-    BaseMiniApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
-
-    @Fluent
-    BaseMiniApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
-
+	@Fluent
+	BaseMiniApi getAccessToken(String appId, String secret, Handler<AsyncResult<JsonObject>> handler);
 }

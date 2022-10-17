@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import tk.okou.sdk.AbstractApi;
 
-public abstract class AbstractMiniApi extends AbstractApi implements BaseMiniApi, BaseMiniApiUrlSupplier {
+public abstract class AbstractMiniApi extends AbstractApi implements BaseMiniApi, BaseMiniApiWithGrantTypeApi, BaseMiniApiUrlSupplier {
 
     public AbstractMiniApi(Vertx vertx, BaseMiniApiOptions options) {
         super(vertx, options);

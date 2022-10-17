@@ -15,14 +15,8 @@ public class BaiduMiniGameApiImpl extends AbstractBaiduMiniGameApi implements Ba
 
     @Override
     public BaiduMiniGameApiImpl code2session(String appId, String secret, String jsCode, Handler<AsyncResult<JsonObject>> handler) {
-//        super.code2session(appId, secret, jsCode, handler);
         super.code2session(appId, secret, jsCode, null, handler);
         return this;
-    }
-
-    @Override
-    public BaiduMiniGameApiImpl code2session(String appId, String secret, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler) {
-        throw new RuntimeException("头像小程序不需要指定grantType");
     }
 
     @Override

@@ -25,9 +25,6 @@ public interface BaiduMiniGameApi extends BaiduMiniApi {
     BaiduMiniGameApi code2session(String clientId, String sk, String jsCode, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent
-    BaiduMiniGameApi code2session(String clientId, String sk, String jsCode, String grantType, Handler<AsyncResult<JsonObject>> handler);
-
-    @Fluent
     BaiduMiniGameApi getAccessToken(String clientId, String sk, Handler<AsyncResult<JsonObject>> handler);
 
     @Fluent

@@ -25,21 +25,9 @@ suspend fun BaseMiniApi.code2sessionAwait(appId: String, secret: String, jsCode:
   }
 }
 
-suspend fun BaseMiniApi.code2sessionAwait(appId: String, secret: String, jsCode: String, grantType: String): JsonObject {
-  return awaitResult {
-    this.code2session(appId, secret, jsCode, grantType, it)
-  }
-}
-
 suspend fun BaseMiniApi.getAccessTokenAwait(appId: String, secret: String): JsonObject {
   return awaitResult {
     this.getAccessToken(appId, secret, it)
-  }
-}
-
-suspend fun BaseMiniApi.getAccessTokenAwait(grantType: String, appId: String, secret: String): JsonObject {
-  return awaitResult {
-    this.getAccessToken(grantType, appId, secret, it)
   }
 }
 
