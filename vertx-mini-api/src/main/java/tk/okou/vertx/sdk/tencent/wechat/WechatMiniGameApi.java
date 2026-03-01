@@ -2,6 +2,7 @@ package tk.okou.vertx.sdk.tencent.wechat;
 
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.GenIgnore;
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -69,5 +70,9 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
 
     @Fluent
     WechatMiniGameApi createWXAQRCode(String accessToken, String path, String width, Handler<Buffer> successConsumer, Handler<AsyncResult<JsonObject>> failHandler);
+
+    @Fluent
+    WechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, @Nullable String page, @Nullable JsonObject data, @Nullable String emphasisKeyWord, @Nullable String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler);
+
 
 }

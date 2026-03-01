@@ -65,7 +65,7 @@ public abstract class AbstractQQMiniGameApi extends AbstractMiniGameApi implemen
     }
 
     @Override
-    public QQMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, String page, JsonObject data, String emphasisKeyword, String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler) {
+    public AbstractQQMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, String page, JsonObject data, String emphasisKeyword, String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler) {
         String url = getSendSubscriptionMessage(accessToken);
         JsonObject postBody = new JsonObject();
         postBody.put("touser", toUserOpenId);
