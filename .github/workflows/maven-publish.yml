@@ -19,12 +19,25 @@ jobs:
           java-version: 8
           distribution: 'temurin'
 
+      - name: Setup Maven settings (单独配置 server-id 等)
+        uses: s4u/maven-settings-action@v4.0.0
+        with:
+          servers: |
+            [
+              {
+                "id": "github",
+                "username": "${{ github.actor }}",
+                "password": "${{ secrets.GITHUB_TOKEN }}"
+              },
+              {
+                "id": "sonatype",
+                "username": "${{ secrets.MAVEN_USERNAME }}",
+                "password": "${{ secrets.MAVEN_PASSWORD }}"
+              }
+            ]
+
       - name: Deploy snapshot to github
         run: mvn -P github --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Deploy sonatype to sonatype
         run: mvn -P sonatype --batch-mode deploy
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
