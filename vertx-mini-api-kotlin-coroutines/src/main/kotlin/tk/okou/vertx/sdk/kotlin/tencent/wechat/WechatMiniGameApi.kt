@@ -89,9 +89,9 @@ suspend fun WechatMiniGameApi.createWXAQRCodeAwait(accessToken: String, path: St
   }
 }
 
-suspend fun WechatMiniGameApi.sendSubscriptionMessageAwait(accessToken: String, toUserOpenId: String, templateId: String, page: String?, data: JsonObject?, emphasisKeyWord: String?, oacAppId: String?, useRobot: Int): JsonObject {
+suspend fun WechatMiniGameApi.sendSubscriptionMessageAwait(accessToken: String, toUserOpenId: String, templateId: String, data: JsonObject, page: String?, miniprogramState: String?, lang: String?): JsonObject {
   return awaitResult {
-    this.sendSubscriptionMessage(accessToken, toUserOpenId, templateId, page, data, emphasisKeyWord, oacAppId, useRobot, it)
+    this.sendSubscriptionMessage(accessToken, toUserOpenId, templateId, data, page, miniprogramState, lang, it)
   }
 }
 

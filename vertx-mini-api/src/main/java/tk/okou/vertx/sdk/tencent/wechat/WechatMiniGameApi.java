@@ -72,7 +72,7 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
     WechatMiniGameApi createWXAQRCode(String accessToken, String path, String width, Handler<Buffer> successConsumer, Handler<AsyncResult<JsonObject>> failHandler);
 
     @Fluent
-    WechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, @Nullable String page, @Nullable JsonObject data, @Nullable String emphasisKeyWord, @Nullable String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler);
+    WechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, JsonObject data, @Nullable String page, @Nullable String miniprogramState, @Nullable String lang, Handler<AsyncResult<JsonObject>> handler);
 
 
 }
