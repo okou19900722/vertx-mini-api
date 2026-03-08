@@ -158,25 +158,20 @@ public abstract class AbstractWechatMiniGameApi extends AbstractMiniGameApi impl
         return this;
     }
 
-    public AbstractWechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, String page, JsonObject data, String emphasisKeyword, String oacAppId, int useRobot, Handler<AsyncResult<JsonObject>> handler) {
+    public AbstractWechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, JsonObject data, String page, String miniprogramState, String lang, Handler<AsyncResult<JsonObject>> handler) {
         String url = getSendSubscriptionMessage(accessToken);
         JsonObject postBody = new JsonObject();
         postBody.put("touser", toUserOpenId);
         postBody.put("template_id", templateId);
+        postBody.put("data", data);
         if (page != null) {
             postBody.put("page", page);
         }
-        if (data != null) {
-            postBody.put("data", data);
+        if (miniprogramState != null) {
+            postBody.put("miniprogram_state", miniprogramState);
         }
-        if (emphasisKeyword != null) {
-            postBody.put("emphasis_keyword", emphasisKeyword);
-        }
-        if (oacAppId != null) {
-            postBody.put("oac_appid", oacAppId);
-        }
-        if (useRobot > 0) {
-            postBody.put("use_robot", useRobot);
+        if (lang != null) {
+            postBody.put("lang", lang);
         }
         postWithJsonResponse(url, postBody.encode(), "application/json", handler);
         return this;
