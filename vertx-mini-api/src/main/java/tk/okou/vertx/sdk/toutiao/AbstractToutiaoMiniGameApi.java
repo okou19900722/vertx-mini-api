@@ -1,5 +1,6 @@
 package tk.okou.vertx.sdk.toutiao;
 
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -9,6 +10,7 @@ import tk.okou.sdk.AbstractApi;
 import tk.okou.sdk.util.SignatureMethod;
 import tk.okou.vertx.sdk.BaseMiniApiOptions;
 import tk.okou.vertx.sdk.model.KVData;
+import tk.okou.vertx.sdk.toutiao.dataobject.SubscriptionData;
 
 import java.util.List;
 
@@ -68,6 +70,31 @@ public class AbstractToutiaoMiniGameApi extends AbstractApi implements ToutiaoMi
     @Override
     public AbstractToutiaoMiniGameApi removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
         return removeUserStorage(accessToken, openId, sessionKey, signatureMethod, new JsonArray(key), handler);
+    }
+
+    @Override
+    public ToutiaoMiniGameApi sendSubscriptionMessage(String accessToken, String appId, String openId, String templateId, @Nullable String page, @Nullable List<SubscriptionData> data, Handler<AsyncResult<JsonObject>> handler) {
+        String url = getUrlOfSendSubscriptionMessage();
+        JsonObject postBody = new JsonObject();
+        postBody.put("access_token", accessToken);
+        postBody.put("app_id", appId);
+        postBody.put("open_id", openId);
+        postBody.put("tpl_id", templateId);
+        if (page != null) {
+            postBody.put("page", page);
+        }
+        if (data != null && !data.isEmpty()) {
+            JsonArray jsonArray = new JsonArray();
+            for (SubscriptionData subscriptionData : data) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.put("_key", subscriptionData.getKey());
+                jsonObject.put("_val", subscriptionData.getValue());
+                jsonArray.add(jsonObject);
+            }
+            postBody.put("data", jsonArray);
+        }
+        postWithJsonResponse(url, postBody.encode(), "application/json", handler);
+        return this;
     }
 
 }

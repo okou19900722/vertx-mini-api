@@ -7,7 +7,7 @@ import tk.okou.vertx.sdk.BaseMiniApiOptions;
 @DataObject(generateConverter = true, publicConverter = false)
 public class ToutiaoMiniApiOptions extends BaseMiniApiOptions {
     public ToutiaoMiniApiOptions() {
-        this.setDefaultHost("developer.toutiao.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
+        this.setDefaultHost("minigame.zijieapi.com").setSsl(true).setTrustAll(true).setDefaultPort(443);
     }
     public ToutiaoMiniApiOptions(JsonObject json) {
 //        this.setDefaultHost("api.q.qq.com").setSsl(true).setTrustAll(true).setDefaultPort(443);

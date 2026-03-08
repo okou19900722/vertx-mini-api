@@ -1,5 +1,6 @@
 package tk.okou.vertx.sdk.toutiao.impl;
 
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -9,6 +10,7 @@ import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.vertx.sdk.toutiao.AbstractToutiaoMiniGameApi;
 import tk.okou.vertx.sdk.toutiao.ToutiaoMiniApiOptions;
 import tk.okou.vertx.sdk.toutiao.ToutiaoMiniGameApi;
+import tk.okou.vertx.sdk.toutiao.dataobject.SubscriptionData;
 
 import java.util.List;
 
@@ -56,6 +58,12 @@ public class ToutiaoMiniGameApiImpl extends AbstractToutiaoMiniGameApi implement
     @Override
     public ToutiaoMiniGameApiImpl removeUserStorage(String accessToken, String openId, String sessionKey, SignatureMethod signatureMethod, List<String> key, Handler<AsyncResult<JsonObject>> handler) {
         super.removeUserStorage(accessToken, openId, sessionKey, signatureMethod, key, handler);
+        return this;
+    }
+
+    @Override
+    public ToutiaoMiniGameApi sendSubscriptionMessage(String accessToken, String appId, String openId, String templateId, @Nullable String page, @Nullable List<SubscriptionData> data, Handler<AsyncResult<JsonObject>> handler) {
+        super.sendSubscriptionMessage(accessToken, appId, openId, templateId, page, data, handler);
         return this;
     }
 }

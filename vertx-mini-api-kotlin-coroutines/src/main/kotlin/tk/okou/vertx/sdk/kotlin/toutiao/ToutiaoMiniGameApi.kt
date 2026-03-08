@@ -20,6 +20,7 @@ import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.sdk.util.SignatureMethod
 import tk.okou.vertx.sdk.model.KVData
 import tk.okou.vertx.sdk.toutiao.ToutiaoMiniGameApi
+import tk.okou.vertx.sdk.toutiao.dataobject.SubscriptionData
 
 suspend fun ToutiaoMiniGameApi.code2sessionAwait(appId: String, secret: String, jsCode: String, anonymousCode: String): JsonObject {
   return awaitResult {
@@ -60,6 +61,12 @@ suspend fun ToutiaoMiniGameApi.removeUserStorageAwait(accessToken: String, openI
 suspend fun ToutiaoMiniGameApi.removeUserStorageAwait(accessToken: String, openId: String, sessionKey: String, signatureMethod: SignatureMethod, key: List<String>): JsonObject {
   return awaitResult {
     this.removeUserStorage(accessToken, openId, sessionKey, signatureMethod, key, it)
+  }
+}
+
+suspend fun ToutiaoMiniGameApi.sendSubscriptionMessageAwait(accessToken: String, appId: String, openId: String, templateId: String, page: String?, data: List<SubscriptionData>?): JsonObject {
+  return awaitResult {
+    this.sendSubscriptionMessage(accessToken, appId, openId, templateId, page, data, it)
   }
 }
 
