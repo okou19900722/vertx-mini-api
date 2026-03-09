@@ -29,7 +29,11 @@ public class AbstractToutiaoMiniGameApi extends AbstractApi implements ToutiaoMi
     @Override
     public AbstractToutiaoMiniGameApi getAccessToken(String grantType, String appId, String secret, Handler<AsyncResult<JsonObject>> handler) {
         String url = getUrlOfGetAccessToken(grantType, appId, secret);
-        getWithJsonResponse(url, handler);
+        JsonObject data = new JsonObject();
+        data.put("grant_type", grantType);
+        data.put("appid", appId);
+        data.put("secret", secret);
+        postWithJsonResponse(url, data.toString(), handler);
         return this;
     }
 

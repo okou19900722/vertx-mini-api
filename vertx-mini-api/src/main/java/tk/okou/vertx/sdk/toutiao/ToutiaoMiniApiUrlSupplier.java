@@ -6,7 +6,7 @@ import static tk.okou.sdk.util.MessageFormatUtils.format;
 
 public interface ToutiaoMiniApiUrlSupplier {
     MessageFormat CODE_2_SESSION_FORMATTER = new MessageFormat("/mgplatform/api/apps/jscode2session?appid={0}&secret={1}&code={2}&anonymous_code={3}");
-    MessageFormat GET_ACCESS_TOKEN = new MessageFormat("/mgplatform/api/apps/v2/token?grant_type={0}&appid={1}&secret={2}");
+    String GET_ACCESS_TOKE = "/mgplatform/api/apps/v2/token";
     MessageFormat SET_USER_STORAGE = new MessageFormat("/mgplatform/api/apps/set_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
     MessageFormat REMOVE_USER_STORAGE = new MessageFormat("/mgplatform/api/apps/remove_user_storage?access_token={0}&signature={1}&openid={2}&sig_method={3}");
 
@@ -15,7 +15,7 @@ public interface ToutiaoMiniApiUrlSupplier {
     }
 
     default String getUrlOfGetAccessToken(String grantType, String appId, String secret) {
-        return format(GET_ACCESS_TOKEN, grantType, appId, secret);
+        return GET_ACCESS_TOKE;
     }
 
     default String getUrlOfSetUserStorage(String accessToken, String signature, String openId, String signatureMethod) {
