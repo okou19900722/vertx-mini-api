@@ -88,14 +88,11 @@ public class AbstractToutiaoMiniGameApi extends AbstractApi implements ToutiaoMi
             postBody.put("page", page);
         }
         if (data != null && !data.isEmpty()) {
-            JsonArray jsonArray = new JsonArray();
+            JsonObject obj = new JsonObject();
             for (SubscriptionData subscriptionData : data) {
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.put("_key", subscriptionData.getKey());
-                jsonObject.put("_val", subscriptionData.getValue());
-                jsonArray.add(jsonObject);
+                obj.put(subscriptionData.getKey(), subscriptionData.getValue());
             }
-            postBody.put("data", jsonArray);
+            postBody.put("data", obj);
         }
         postWithJsonResponse(url, postBody.encode(), "application/json", handler);
         return this;

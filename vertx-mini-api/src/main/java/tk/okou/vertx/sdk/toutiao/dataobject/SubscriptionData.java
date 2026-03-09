@@ -18,15 +18,17 @@ public class SubscriptionData {
         return key;
     }
 
-    public void setKey(String key) {
+    public SubscriptionData setKey(String key) {
         this.key = key;
+        return this;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public SubscriptionData setValue(String value) {
         this.value = value;
+        return this;
     }
 }
