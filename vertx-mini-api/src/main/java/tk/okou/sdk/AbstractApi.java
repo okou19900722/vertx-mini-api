@@ -15,8 +15,6 @@ import tk.okou.sdk.exception.Not200Exception;
 import tk.okou.sdk.util.SignatureMethod;
 import tk.okou.vertx.sdk.BaseMiniApiOptions;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.function.Function;
 
 public abstract class AbstractApi implements BaseApi {
@@ -102,7 +100,7 @@ public abstract class AbstractApi implements BaseApi {
             String signature = signatureMethod.signature(postBody, secretKey);
             String url = urlSupplier.apply(signature);
             postWithJsonResponse(url, postBody, handler);
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             fail(handler, e);
         }
     }
