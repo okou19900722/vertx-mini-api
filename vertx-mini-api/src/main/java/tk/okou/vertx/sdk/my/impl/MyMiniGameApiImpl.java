@@ -27,7 +27,20 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
 
     @Override
     public MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, Handler<AsyncResult<JsonObject>> handler) {
-        signAndPostWithJsonResponse(appId, "alipay.system.oauth.token", privateKey, handler, data -> {
+        String method = "alipay.system.oauth.token";
+        Handler<AsyncResult<JsonObject>> prevActionHandler = async -> {
+            if (async.failed()) {
+                handler.handle(async);
+            } else {
+                JsonObject response = async.result();
+                JsonObject data = response.getJsonObject("error_response");
+                if (data == null) {
+                    data = response.getJsonObject("alipay_system_oauth_token_response");
+                }
+                handle(method, data, handler);
+            }
+        };
+        signAndPostWithJsonResponse(appId, method, privateKey, prevActionHandler, data -> {
             // 业务参数直接平铺，没有 biz_content 包裹
             data.put("grant_type", grantType);
             data.put("code", jsCode);
@@ -138,5 +151,13 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
             }
         }
         return sb.toString();
+    }
+
+    private static void handle(String method, JsonObject data, Handler<AsyncResult<JsonObject>> handler) {
+        String errorCode = data.getString("code");
+        if (errorCode != null && !"10000".equals(errorCode)) {
+            logger.error(method + " - " + data);
+        }
+        handler.handle(Future.succeededFuture(data));
     }
 }
