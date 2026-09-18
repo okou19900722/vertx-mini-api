@@ -19,7 +19,7 @@ public interface MyMiniGameApi extends BaseApi {
     }
     @Fluent
     default MyMiniGameApi code2token(String appId, String jsCode, String privateKey, String publicKey, Handler<AsyncResult<JsonObject>> handler) {
-        return code2token(appId, jsCode, privateKey, publicKey, "authorization_code", handler);
+        return code2token(appId, jsCode, "authorization_code", privateKey, publicKey, handler);
     }
     @Fluent
     MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, String publicKey, Handler<AsyncResult<JsonObject>> handler);
