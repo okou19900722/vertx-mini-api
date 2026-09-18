@@ -18,9 +18,9 @@ public interface MyMiniGameApi extends BaseApi {
         return new MyMiniGameApiImpl(vertx, options);
     }
     @Fluent
-    default MyMiniGameApi code2token(String appId, String jsCode, String privateKey, Handler<AsyncResult<JsonObject>> handler) {
-        return code2token(appId, jsCode, privateKey, "authorization_code", handler);
+    default MyMiniGameApi code2token(String appId, String jsCode, String privateKey, String publicKey, Handler<AsyncResult<JsonObject>> handler) {
+        return code2token(appId, jsCode, privateKey, publicKey, "authorization_code", handler);
     }
     @Fluent
-    MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, Handler<AsyncResult<JsonObject>> handler);
+    MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, String publicKey, Handler<AsyncResult<JsonObject>> handler);
 }

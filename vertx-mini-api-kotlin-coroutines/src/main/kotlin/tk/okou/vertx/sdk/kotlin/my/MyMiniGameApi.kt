@@ -19,15 +19,15 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
 import tk.okou.vertx.sdk.my.MyMiniGameApi
 
-suspend fun MyMiniGameApi.code2tokenAwait(appId: String, jsCode: String, privateKey: String): JsonObject {
+suspend fun MyMiniGameApi.code2tokenAwait(appId: String, jsCode: String, privateKey: String, publicKey: String): JsonObject {
   return awaitResult {
-    this.code2token(appId, jsCode, privateKey, it)
+    this.code2token(appId, jsCode, privateKey, publicKey, it)
   }
 }
 
-suspend fun MyMiniGameApi.code2tokenAwait(appId: String, jsCode: String, grantType: String, privateKey: String): JsonObject {
+suspend fun MyMiniGameApi.code2tokenAwait(appId: String, jsCode: String, grantType: String, privateKey: String, publicKey: String): JsonObject {
   return awaitResult {
-    this.code2token(appId, jsCode, grantType, privateKey, it)
+    this.code2token(appId, jsCode, grantType, privateKey, publicKey, it)
   }
 }
 

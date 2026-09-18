@@ -1,5 +1,9 @@
 package tk.okou.vertx.sdk.my.impl;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayConstants;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.internal.util.SignSourceData;
 import io.vertx.core.*;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.json.JsonObject;
@@ -7,7 +11,6 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import tk.okou.sdk.AbstractApi;
 import tk.okou.sdk.exception.Not200Exception;
-import tk.okou.sdk.util.SignatureMethod;
 import tk.okou.vertx.sdk.BaseMiniApiOptions;
 import tk.okou.vertx.sdk.my.MyMiniGameApi;
 
@@ -19,6 +22,15 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 
 public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
+    /**
+     * 老版本失败节点
+     */
+    public static final String ERROR_RESPONSE = "error_response";
+
+    /**
+     * 新版本节点后缀
+     */
+    public static final String RESPONSE_SUFFIX = "_response";
 
     private static final Logger logger = LoggerFactory.getLogger(MyMiniGameApiImpl.class);
     public MyMiniGameApiImpl(Vertx vertx, BaseMiniApiOptions options) {
@@ -26,7 +38,7 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
     }
 
     @Override
-    public MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, Handler<AsyncResult<JsonObject>> handler) {
+    public MyMiniGameApi code2token(String appId, String jsCode, String grantType, String privateKey, String publicKey, Handler<AsyncResult<JsonObject>> handler) {
         String method = "alipay.system.oauth.token";
         Handler<AsyncResult<JsonObject>> prevActionHandler = async -> {
             if (async.failed()) {
@@ -37,10 +49,10 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
                 if (data == null) {
                     data = response.getJsonObject("alipay_system_oauth_token_response");
                 }
-                handle(method, data, handler);
+                handler.handle(Future.succeededFuture(data));
             }
         };
-        signAndPostWithJsonResponse(appId, method, privateKey, prevActionHandler, data -> {
+        signAndPostWithJsonResponse(appId, method, privateKey, publicKey, prevActionHandler, data -> {
             // 业务参数直接平铺，没有 biz_content 包裹
             data.put("grant_type", grantType);
             data.put("code", jsCode);
@@ -52,10 +64,11 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
             String appId,
             String method,
             String privateKey,
+            String publicKey,
             Handler<AsyncResult<JsonObject>> handler,
             Consumer<Map<String, String>> postBodyConsumer
     ) {
-        signAndPostWithJsonResponse(appId, method, "UTF-8", "RSA2", "1.0", privateKey, handler, postBodyConsumer);
+        signAndPostWithJsonResponse(appId, method, "UTF-8", "RSA2", "1.0", privateKey, publicKey, handler, postBodyConsumer);
     }
     private void signAndPostWithJsonResponse(
             String appId,
@@ -64,6 +77,7 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
             String signType,
             String version,
             String privateKey,
+            String publicKey,
             Handler<AsyncResult<JsonObject>> handler,
             Consumer<Map<String, String>> postBodyConsumer
     ) {
@@ -80,7 +94,7 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
         String signContent = buildSignContent(params);
         String sign;
         try {
-            sign = SignatureMethod.SHA256_WITH_RSA.signature(signContent, privateKey);
+            sign = AlipaySignature.sign(signContent, privateKey, charset, signType);
         } catch (Throwable e) {
             handler.handle(Future.failedFuture(e));
             return;
@@ -102,8 +116,23 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
                 response.bodyHandler(body -> {
                     String contentType = response.getHeader("Content-Type");
                     String responseCharset = parseCharset(contentType); // 从 "application/json;charset=GBK" 中提取 GBK
-                    String jsonStr = body.toString(responseCharset != null ? responseCharset : "UTF-8");
+                    responseCharset = responseCharset != null ? responseCharset : "UTF-8";
+
+                    String jsonStr = body.toString(responseCharset);
                     JsonObject json = new JsonObject(jsonStr);
+                    String responseSign = json.getString("sign");
+
+                    try {
+                        String signSourceData = getSignSourceData(method, jsonStr);
+                        if (signSourceData == null || !AlipaySignature.verify(signSourceData, responseSign, publicKey, charset, signType)) {
+                            handler.handle(Future.failedFuture("response sign does not match, " + response));
+                            return;
+                        }
+                    } catch (Exception e) {
+                        handler.handle(Future.failedFuture(e));
+                        return;
+                    }
+
                     success(handler, json);
                 });
                 response.exceptionHandler(e -> logger.error("response handler fail", e));
@@ -153,11 +182,50 @@ public class MyMiniGameApiImpl extends AbstractApi implements MyMiniGameApi {
         return sb.toString();
     }
 
-    private static void handle(String method, JsonObject data, Handler<AsyncResult<JsonObject>> handler) {
-        String errorCode = data.getString("code");
-        if (errorCode != null && !"10000".equals(errorCode)) {
-            logger.error(method + " - " + data);
+    private String getSignSourceData(String method, String body) throws AlipayApiException {
+        // 加签源串起点
+        String rootNode = method.replace('.', '_')
+                + RESPONSE_SUFFIX;
+        String errorRootNode = ERROR_RESPONSE;
+
+        int indexOfRootNode = body.indexOf(rootNode);
+        int indexOfErrorRoot = body.indexOf(errorRootNode);
+
+        // 成功或者新版接口
+        if (indexOfRootNode > 0) {
+
+            return parseSignSourceData(body, rootNode, indexOfRootNode);
+
+            // 老版本失败接口
+        } else if (indexOfErrorRoot > 0) {
+
+            return parseSignSourceData(body, errorRootNode, indexOfErrorRoot);
+        } else {
+            return null;
         }
-        handler.handle(Future.succeededFuture(data));
     }
+
+    /**
+     * 获取签名源串内容
+     */
+    private String parseSignSourceData(String body, String rootNode, int indexOfRootNode) throws AlipayApiException {
+
+        //第一个字母+长度+冒号+引号
+        int signDataStartIndex = indexOfRootNode + rootNode.length() + 2;
+
+        int indexOfSign = body.indexOf("\"" + AlipayConstants.SIGN + "\"");
+        if (indexOfSign < 0) {
+            return null;
+        }
+
+        SignSourceData signSourceData = AlipaySignature.extractSignContent(body, signDataStartIndex);
+
+        //如果提取的待验签原始内容后还有root
+        if (body.lastIndexOf(rootNode) > signSourceData.getEndIndex()) {
+            throw new AlipayApiException("检测到响应报文中有重复的" + rootNode + "，验签失败。");
+        }
+
+        return signSourceData.getSourceData();
+    }
+
 }
