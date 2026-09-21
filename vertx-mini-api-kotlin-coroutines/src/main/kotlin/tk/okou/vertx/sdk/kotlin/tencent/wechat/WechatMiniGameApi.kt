@@ -95,3 +95,9 @@ suspend fun WechatMiniGameApi.sendSubscriptionMessageAwait(accessToken: String, 
   }
 }
 
+suspend fun WechatMiniGameApi.getGameGiftListAwait(accessToken: String, page: Int, pageSize: Int, beginDate: String, endDate: String): JsonObject {
+  return awaitResult {
+    this.getGameGiftList(accessToken, page, pageSize, beginDate, endDate, it)
+  }
+}
+

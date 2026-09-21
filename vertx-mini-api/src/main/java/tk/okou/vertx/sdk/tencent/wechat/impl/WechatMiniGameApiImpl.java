@@ -65,4 +65,11 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
         super.removeUserStorage(accessToken, openId, sessionKey, keys, handler);
         return this;
     }
+
+    @Override
+    public WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, String beginDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
+        String url = String.format("/publisher/stat?action=general_action&cmd=get_game_gift_list&access_token=%s&begin_date=%s&end_date=%s&page=%d&page_size=%d", accessToken, beginDate, endDate, page, pageSize);
+        getWithJsonResponse(url, handler);
+        return null;
+    }
 }

@@ -74,5 +74,11 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
     @Fluent
     WechatMiniGameApi sendSubscriptionMessage(String accessToken, String toUserOpenId, String templateId, JsonObject data, @Nullable String page, @Nullable String miniprogramState, @Nullable String lang, Handler<AsyncResult<JsonObject>> handler);
 
+    /**
+     * 查询流量主每日广告金收入
+     */
+    @Fluent
+    WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, String beginDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
+
 
 }
