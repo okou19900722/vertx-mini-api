@@ -134,5 +134,27 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
         return getPublisherSettlement(accessToken, page, pageSize, startDate.format(FORMATTER_2), endDate.format(FORMATTER_2), handler);
     }
 
+    /**
+     * 活跃日期口径（monetize_daily_data）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/analysis/ctb/basic.html#%E4%BA%8C%E3%80%81%E6%B4%BB%E8%B7%83%E6%97%A5%E6%9C%9F%E5%8F%A3%E5%BE%84%EF%BC%88monetize-daily-data%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
+    @GenIgnore
+    default WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
+        return getMonetizeDailyData(appId, accessToken, startDate.format(FORMATTER_1), endDate.format(FORMATTER_1), handler);
+    }
+    /**
+     * 注册日期口径（monetize_trace_data）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/analysis/ctb/basic.html#%E4%B8%89%E3%80%81%E6%B3%A8%E5%86%8C%E6%97%A5%E6%9C%9F%E5%8F%A3%E5%BE%84%EF%BC%88monetize-trace-data%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
+    @GenIgnore
+    default WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
+        return getMonetizeTraceData(appId, accessToken, startDate.format(FORMATTER_1), endDate.format(FORMATTER_1), handler);
+    }
 
 }

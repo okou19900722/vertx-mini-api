@@ -6,6 +6,7 @@ import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import tk.okou.vertx.sdk.tencent.wechat.AbstractWechatMiniGameApi;
 import tk.okou.vertx.sdk.tencent.wechat.WechatMiniApiOptions;
@@ -131,10 +132,43 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
         return this;
     }
 
-    private QueryStringEncoder createAdDataQueryEncoder(String action, String accessToken, int page, int pageSize) {
+    @Override
+    public WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createMonetizeQueryEncoder("monetize_daily_data", appId, accessToken, startDate, endDate);
+        String url = encoder.toString();
+        System.out.println("url: " + url);
+        getWithJsonResponse(url, handler);
+        return this;
+    }
+
+    @Override
+    public WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createMonetizeQueryEncoder("monetize_trace_data", appId, accessToken, startDate, endDate);
+        String url = encoder.toString();
+        System.out.println("url: " + url);
+        getWithJsonResponse(url, handler);
+        return this;
+    }
+
+    private QueryStringEncoder createAdDataQueryEncoder(String action, String accessToken) {
         QueryStringEncoder encoder = new QueryStringEncoder("/publisher/stat");
         encoder.addParam("action", action);
         encoder.addParam("access_token", accessToken);
+        return encoder;
+    }
+    private QueryStringEncoder createMonetizeQueryEncoder(String action, String appId, String accessToken, String startDate, String endDate) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder(action, accessToken);
+        encoder.addParam("appid", appId);
+        JsonArray filters = new JsonArray();
+        JsonObject filter = new JsonObject();
+        filter.put("begin_ds", startDate);
+        filter.put("end_ds", endDate);
+        filters.add(filter);
+        encoder.addParam("filters", filters.encode());
+        return encoder;
+    }
+    private QueryStringEncoder createAdDataQueryEncoder(String action, String accessToken, int page, int pageSize) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder(action, accessToken);
         encoder.addParam("page", String.valueOf(page));
         encoder.addParam("page_size", String.valueOf(pageSize));
         return encoder;

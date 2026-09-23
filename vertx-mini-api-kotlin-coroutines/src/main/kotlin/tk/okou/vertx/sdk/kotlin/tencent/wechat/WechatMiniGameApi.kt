@@ -188,3 +188,37 @@ suspend fun WechatMiniGameApi.getPublisherSettlementAwait(accessToken: String, p
   }
 }
 
+/**
+ * Suspending version of method [tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi.getMonetizeDailyData]
+ *
+ * @param appId 
+ * @param accessToken 
+ * @param startDate 
+ * @param endDate 
+ * @return [JsonObject]
+ *
+ * NOTE: This function has been automatically generated from [tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi] using Vert.x codegen.
+ */
+suspend fun WechatMiniGameApi.getMonetizeDailyDataAwait(appId: String, accessToken: String, startDate: String, endDate: String): JsonObject {
+  return awaitResult {
+    this.getMonetizeDailyData(appId, accessToken, startDate, endDate, it)
+  }
+}
+
+/**
+ * Suspending version of method [tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi.getMonetizeTraceData]
+ *
+ * @param appId 
+ * @param accessToken 
+ * @param startDate 
+ * @param endDate 
+ * @return [JsonObject]
+ *
+ * NOTE: This function has been automatically generated from [tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi] using Vert.x codegen.
+ */
+suspend fun WechatMiniGameApi.getMonetizeTraceDataAwait(appId: String, accessToken: String, startDate: String, endDate: String): JsonObject {
+  return awaitResult {
+    this.getMonetizeTraceData(appId, accessToken, startDate, endDate, it)
+  }
+}
+
