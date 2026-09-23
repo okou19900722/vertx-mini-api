@@ -70,22 +70,20 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
         return this;
     }
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Override
-    public WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
-        String url = String.format("/publisher/stat?action=general_action&cmd=get_game_gift_list&access_token=%s&begin_date=%s&end_date=%s&page=%d&page_size=%d",
-                accessToken,
-                startDate.format(formatter),
-                endDate.format(formatter),
-                page, pageSize);
+    public WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder("general_action", accessToken, page, pageSize);
+        encoder.addParam("cmd", "get_game_gift_list");
+        encoder.addParam("begin_date", startDate);
+        encoder.addParam("end_date", endDate);
+        String url = encoder.toString();
         getWithJsonResponse(url, handler);
         return this;
     }
 
     @Override
-    public WechatMiniGameApi getPublisherAdPosGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, String adSlot, Handler<AsyncResult<JsonObject>> handler) {
-        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_adpos_general", accessToken, page, pageSize, startDate, endDate, formatter2);
+    public WechatMiniGameApi getPublisherAdPosGeneral(String accessToken, int page, int pageSize, String startDate, String endDate, String adSlot, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_adpos_general", accessToken, page, pageSize, startDate, endDate);
         if (adSlot != null) {
             encoder.addParam("ad_slot", adSlot);
         }
@@ -95,8 +93,8 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
         return this;
     }
     @Override
-    public WechatMiniGameApi getPublisherAdUnitGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, String adSlot, String adUnitId, Handler<AsyncResult<JsonObject>> handler) {
-        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_adunit_general", accessToken, page, pageSize, startDate, endDate, formatter2);
+    public WechatMiniGameApi getPublisherAdUnitGeneral(String accessToken, int page, int pageSize, String startDate, String endDate, String adSlot, String adUnitId, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_adunit_general", accessToken, page, pageSize, startDate, endDate);
         if (adSlot != null) {
             encoder.addParam("ad_slot", adSlot);
         }
@@ -125,8 +123,8 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
     }
 
     @Override
-    public WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
-        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_settlement", accessToken, page, pageSize, startDate, endDate, formatter2);
+    public WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
+        QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_settlement", accessToken, page, pageSize, startDate, endDate);
         String url = encoder.toString();
         System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
@@ -141,10 +139,10 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
         encoder.addParam("page_size", String.valueOf(pageSize));
         return encoder;
     }
-    private QueryStringEncoder createAdDataQueryEncoder(String action, String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, DateTimeFormatter formatter) {
+    private QueryStringEncoder createAdDataQueryEncoder(String action, String accessToken, int page, int pageSize, String startDate, String endDate) {
         QueryStringEncoder encoder = createAdDataQueryEncoder(action, accessToken, page, pageSize);
-        encoder.addParam("start_date", formatter2.format(startDate));
-        encoder.addParam("end_date", formatter2.format(endDate));
+        encoder.addParam("start_date", startDate);
+        encoder.addParam("end_date", endDate);
         return encoder;
     }
 }
