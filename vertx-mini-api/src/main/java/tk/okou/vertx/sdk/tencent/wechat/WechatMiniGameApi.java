@@ -15,6 +15,7 @@ import tk.okou.vertx.sdk.model.KVData;
 import tk.okou.vertx.sdk.tencent.wechat.impl.WechatMiniGameApiImpl;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @VertxGen
@@ -76,9 +77,40 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
 
     /**
      * 查询流量主每日广告金收入
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/dev/guide/open-ability/ad/adq.html#_1%E3%80%81%E6%9F%A5%E8%AF%A2%E6%B5%81%E9%87%8F%E4%B8%BB%E6%AF%8F%E6%97%A5%E5%B9%BF%E5%91%8A%E9%87%91%E6%94%B6%E5%85%A5">文档</a>
      */
     @Fluent
-    WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, String beginDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
+    WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler);
+
+    /**
+     * 获取小游戏广告汇总数据（publisher_adpos_general）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/dev/guide/open-ability/ad/ad-data-interface.html#%E4%B8%80%E3%80%81%E8%8E%B7%E5%8F%96%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%B9%BF%E5%91%8A%E6%B1%87%E6%80%BB%E6%95%B0%E6%8D%AE%EF%BC%88publisher-adpos-general%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getPublisherAdPosGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, @Nullable String adSlot, Handler<AsyncResult<JsonObject>> handler);
+    /**
+     * 获取小游戏广告细分数据（publisher_adunit_general）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/dev/guide/open-ability/ad/ad-data-interface.html#%E4%BA%8C%E3%80%81%E8%8E%B7%E5%8F%96%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%B9%BF%E5%91%8A%E7%BB%86%E5%88%86%E6%95%B0%E6%8D%AE%EF%BC%88publisher-adunit-general%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getPublisherAdUnitGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, @Nullable String adSlot, @Nullable String adUnitId, Handler<AsyncResult<JsonObject>> handler);
+    /**
+     * 获取小游戏广告位清单（get_adunit_list）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/dev/guide/open-ability/ad/ad-data-interface.html#%E4%B8%89%E3%80%81%E8%8E%B7%E5%8F%96%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%B9%BF%E5%91%8A%E4%BD%8D%E6%B8%85%E5%8D%95%EF%BC%88get-adunit-list%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getAdUnitList(String accessToken, int page, int pageSize, @Nullable String adSlot, @Nullable String adUnitId, Handler<AsyncResult<JsonObject>> handler);
+    /**
+     * 获取小游戏结算收入数据及结算主体信息（publisher_settlement）
+     *
+     * <a href="https://developers.weixin.qq.com/minigame/dev/guide/open-ability/ad/ad-data-interface.html#%E5%9B%9B%E3%80%81%E8%8E%B7%E5%8F%96%E5%B0%8F%E6%B8%B8%E6%88%8F%E7%BB%93%E7%AE%97%E6%94%B6%E5%85%A5%E6%95%B0%E6%8D%AE%E5%8F%8A%E7%BB%93%E7%AE%97%E4%B8%BB%E4%BD%93%E4%BF%A1%E6%81%AF%EF%BC%88publisher-settlement%EF%BC%89">文档</a>
+     */
+    @Fluent
+    WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler);
 
 
 }
