@@ -70,16 +70,20 @@ public abstract class AbstractApi implements BaseApi {
         return ar -> handler.handle(ar.map(body -> this.bufferToJson(uri, body)));
     }
     protected JsonObject bufferToJson(String uri, Buffer buffer) {
-        JsonObject data = buffer.toJsonObject();
-        Integer errcode = data.getInteger("errcode");
-        if (errcode != null && errcode != 0) {
-            if (errcode == 40163) {
-                logger.warn("code been used");
-            } else {
-                logger.error(uri + " - " + data);
+        try {
+            JsonObject data = buffer.toJsonObject();
+            Integer errcode = data.getInteger("errcode");
+            if (errcode != null && errcode != 0) {
+                if (errcode == 40163) {
+                    logger.warn("code been used");
+                } else {
+                    logger.error(uri + " - " + data);
+                }
             }
+            return data;
+        } catch (Throwable t) {
+            throw new RuntimeException("数据不是json，请求地址：" + uri + "，响应" + buffer.toString(), t);
         }
-        return data;
     }
 
     protected void post(String uri, String data, String contentType, Handler<AsyncResult<Buffer>> handler) {
