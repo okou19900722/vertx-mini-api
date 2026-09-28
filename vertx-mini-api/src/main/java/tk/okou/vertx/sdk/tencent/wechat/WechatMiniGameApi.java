@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static io.vertx.codegen.annotations.GenIgnore.PERMITTED_TYPE;
+
 @VertxGen
 public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
     @GenIgnore
@@ -88,7 +90,8 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getGameGiftList(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
         return getGameGiftList(accessToken, page, pageSize, startDate.format(FORMATTER_1), endDate.format(FORMATTER_1), handler);
     }
@@ -100,7 +103,8 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getPublisherAdPosGeneral(String accessToken, int page, int pageSize, String startDate, String endDate, @Nullable String adSlot, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getPublisherAdPosGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, @Nullable String adSlot, Handler<AsyncResult<JsonObject>> handler) {
         return getPublisherAdPosGeneral(accessToken, page, pageSize, startDate.format(FORMATTER_2), endDate.format(FORMATTER_2), adSlot, handler);
     }
@@ -111,7 +115,8 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getPublisherAdUnitGeneral(String accessToken, int page, int pageSize, String startDate, String endDate, @Nullable String adSlot, @Nullable String adUnitId, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getPublisherAdUnitGeneral(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, @Nullable String adSlot, @Nullable String adUnitId, Handler<AsyncResult<JsonObject>> handler) {
         return getPublisherAdUnitGeneral(accessToken, page, pageSize, startDate.format(FORMATTER_2), endDate.format(FORMATTER_2), adSlot, adUnitId, handler);
     }
@@ -129,7 +134,9 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
         return getPublisherSettlement(accessToken, page, pageSize, startDate.format(FORMATTER_2), endDate.format(FORMATTER_2), handler);
     }
@@ -141,7 +148,8 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
         return getMonetizeDailyData(appId, accessToken, startDate.format(FORMATTER_1), endDate.format(FORMATTER_1), handler);
     }
@@ -152,7 +160,8 @@ public interface WechatMiniGameApi extends BaseMiniGameApi, WechatMiniApi {
      */
     @Fluent
     WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler);
-    @GenIgnore
+    @Fluent
+    @GenIgnore(PERMITTED_TYPE)
     default WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, LocalDate startDate, LocalDate endDate, Handler<AsyncResult<JsonObject>> handler) {
         return getMonetizeTraceData(appId, accessToken, startDate.format(FORMATTER_1), endDate.format(FORMATTER_1), handler);
     }

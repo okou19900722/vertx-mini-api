@@ -89,7 +89,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
             encoder.addParam("ad_slot", adSlot);
         }
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }
@@ -103,7 +103,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
             encoder.addParam("ad_unit_id", adUnitId);
         }
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }
@@ -118,7 +118,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
             encoder.addParam("ad_unit_id", adUnitId);
         }
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }
@@ -127,7 +127,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
     public WechatMiniGameApi getPublisherSettlement(String accessToken, int page, int pageSize, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
         QueryStringEncoder encoder = createAdDataQueryEncoder("publisher_settlement", accessToken, page, pageSize, startDate, endDate);
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }
@@ -136,7 +136,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
     public WechatMiniGameApi getMonetizeDailyData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
         QueryStringEncoder encoder = createMonetizeQueryEncoder("monetize_daily_data", appId, accessToken, startDate, endDate);
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }
@@ -145,7 +145,7 @@ public class WechatMiniGameApiImpl extends AbstractWechatMiniGameApi implements 
     public WechatMiniGameApi getMonetizeTraceData(String appId, String accessToken, String startDate, String endDate, Handler<AsyncResult<JsonObject>> handler) {
         QueryStringEncoder encoder = createMonetizeQueryEncoder("monetize_trace_data", appId, accessToken, startDate, endDate);
         String url = encoder.toString();
-        System.out.println("url: " + url);
+//        System.out.println("url: " + url);
         getWithJsonResponse(url, handler);
         return this;
     }

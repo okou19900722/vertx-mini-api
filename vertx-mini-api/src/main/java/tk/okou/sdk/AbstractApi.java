@@ -36,7 +36,10 @@ public abstract class AbstractApi implements BaseApi {
         if (options.getTimeout() != null) {
             request.setTimeout(options.getTimeout());
         }
-        request.exceptionHandler(e -> fail(handler, e))
+        request.exceptionHandler(e -> {
+                    logger.error(uri, e);
+                    fail(handler, e);
+                })
                 .end();
     }
 

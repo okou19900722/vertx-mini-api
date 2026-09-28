@@ -18,6 +18,7 @@ package tk.okou.vertx.sdk.kotlin.tencent.wechat
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
+import java.time.LocalDate
 import tk.okou.sdk.util.SignatureMethod
 import tk.okou.vertx.sdk.model.KVData
 import tk.okou.vertx.sdk.tencent.wechat.Color
@@ -217,6 +218,42 @@ suspend fun WechatMiniGameApi.getMonetizeDailyDataAwait(appId: String, accessTok
  * NOTE: This function has been automatically generated from [tk.okou.vertx.sdk.tencent.wechat.WechatMiniGameApi] using Vert.x codegen.
  */
 suspend fun WechatMiniGameApi.getMonetizeTraceDataAwait(appId: String, accessToken: String, startDate: String, endDate: String): JsonObject {
+  return awaitResult {
+    this.getMonetizeTraceData(appId, accessToken, startDate, endDate, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getGameGiftListAwait(accessToken: String, page: Int, pageSize: Int, startDate: LocalDate, endDate: LocalDate): JsonObject {
+  return awaitResult {
+    this.getGameGiftList(accessToken, page, pageSize, startDate, endDate, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getPublisherAdPosGeneralAwait(accessToken: String, page: Int, pageSize: Int, startDate: LocalDate, endDate: LocalDate, adSlot: String?): JsonObject {
+  return awaitResult {
+    this.getPublisherAdPosGeneral(accessToken, page, pageSize, startDate, endDate, adSlot, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getPublisherAdUnitGeneralAwait(accessToken: String, page: Int, pageSize: Int, startDate: LocalDate, endDate: LocalDate, adSlot: String?, adUnitId: String?): JsonObject {
+  return awaitResult {
+    this.getPublisherAdUnitGeneral(accessToken, page, pageSize, startDate, endDate, adSlot, adUnitId, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getPublisherSettlementAwait(accessToken: String, page: Int, pageSize: Int, startDate: LocalDate, endDate: LocalDate): JsonObject {
+  return awaitResult {
+    this.getPublisherSettlement(accessToken, page, pageSize, startDate, endDate, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getMonetizeDailyDataAwait(appId: String, accessToken: String, startDate: LocalDate, endDate: LocalDate): JsonObject {
+  return awaitResult {
+    this.getMonetizeDailyData(appId, accessToken, startDate, endDate, it)
+  }
+}
+
+suspend fun WechatMiniGameApi.getMonetizeTraceDataAwait(appId: String, accessToken: String, startDate: LocalDate, endDate: LocalDate): JsonObject {
   return awaitResult {
     this.getMonetizeTraceData(appId, accessToken, startDate, endDate, it)
   }
