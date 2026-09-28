@@ -1,4 +1,4 @@
-[![Travis (.org)](https://img.shields.io/travis/okou19900722/vertx-mini-api.svg)](https://travis-ci.org/okou19900722/vertx-mini-api)
+[![Maven Package](https://github.com/okou19900722/vertx-mini-api/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/okou19900722/vertx-mini-api/actions/workflows/maven-publish.yml)
 [![kotlin 1.3.0](https://img.shields.io/badge/kotlin-1.3.0-orange.svg)](http://kotlinlang.org/)
 
 
